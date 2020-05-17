@@ -1,0 +1,1 @@
+\copy raw.source_master FROM 'data/source/operations_list.csv' DELIMITER ',' CSV HEADER;

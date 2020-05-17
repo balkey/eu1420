@@ -1,0 +1,1 @@
+\copy (SELECT * FROM real.source_master) TO 'data/source/operations_list_real.csv' DELIMITER ',' CSV HEADER;
