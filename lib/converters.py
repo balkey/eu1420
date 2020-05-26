@@ -2,12 +2,25 @@
 # -*- coding: utf-8 -*-
 
 import xlrd
+from functools import wraps
 from utils import *
 
 confs = open_config('config/source.json')['DATA_SOURCE']
 target_folder = confs['TARGET_FOLDER']
 converted_folder = confs['CONVERTED_FOLDER']
 
+def handle_exceptions(fn):
+	@wraps(fn)
+	def wrapper(self, *args, **kw):
+		try:
+			return fn(self, *args, **kw)
+		except Exception as e:
+            #exception_handler(self.log)
+			print(e)
+	return wrapper
+
+
+@handle_exceptions
 def convert_xsl(dirpath, filename):
 	dirpath_source = dirpath
 	filepath_source  = os.path.join(dirpath, filename)
@@ -39,8 +52,9 @@ def convert_xsl(dirpath, filename):
 				dw = csv.writer(f)
 				dw.writerow(row)
 
+@handle_exceptions
 def convert_ods(dirpath, filename):
 	pass
-
-def convert_xmls(dirpath, filename):
+@handle_exceptions
+def convert_xml(dirpath, filename):
 	pass
