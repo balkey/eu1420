@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import xlrd
 import os
 import os.path
 import csv
+from converters import *
 
 def convert_xsl(filepath):
 	workbook = xlrd.open_workbook(filepath)
@@ -33,14 +33,29 @@ def convert_xsl(filepath):
 alls = 0
 successfulls = 0
 for dirpath, dirnames, filenames in os.walk("./data/source/"):
-	for filename in [f for f in filenames if f.split('.')[-1] in ['xls', 'xlsx']]:
-		alls += 1
-		print(os.path.join(dirpath, filename))
-		try:
-			convert_xsl(os.path.join(dirpath, filename))
-			successfulls +=1
-		except Exception as e:
-			print(e)
+	for filename in [f for f in filenames]:
+			extension = filename.split('.')[-1]
+			if extension in ['xls', 'xlsx']:
+				alls += 1
+				print(os.path.join(dirpath, filename))
+				try:
+					convert_xsl(dirpath, filename)
+					successfulls +=1
+				except Exception as e:
+					print(e)
+			elif extension in ['zip']:
+				print('Bypassing .zip file')
+			elif extension in ['csv']:
+				print('CSV file needs to be moved')
+			elif extension in ['xml']:
+				print('XML needs to be parsed')
+			elif extension in ['ods']:
+				print('ods needs to be parsed')
+			elif extension in ['DS_Store']:
+				pass
+			else:
+				print('WHAT THE FUCK IS THIS? '+str(extension))
+
 
 print(alls)
 print(successfulls)

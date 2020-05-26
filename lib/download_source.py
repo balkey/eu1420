@@ -10,14 +10,10 @@ from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import magic
 import certifi
 import urllib3
+from utils import *
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 cafile = certifi.where()
-
-def open_config(config_source):
-	with open(config_source) as json_file:
-		data = json.load(json_file)
-		return data
 
 def download_file(url, fileformat, compressed, target_folder):
 	params = {'stream':True}
@@ -37,16 +33,6 @@ def download_file(url, fileformat, compressed, target_folder):
 					f.write(chunk)
 		return local_filename
 
-def csv_from_excel(excel_file, target_folder):
-	workbook = xlrd.open_workbook(excel_file)
-	all_worksheets = workbook.sheet_names()
-	for worksheet_name in all_worksheets:
-		worksheet = workbook.sheet_by_name(worksheet_name)
-		with open(u'{}.csv'.format(target_folder+worksheet_name), 'w', encoding='utf8') as your_csv_file:
-			wr = csv.writer(your_csv_file, quoting=csv.QUOTE_ALL)
-			for rownum in range(worksheet.nrows):
-				wr.writerow([entry for entry in worksheet.row_values(rownum)])
-
 def transform_string(input):
 	output = input.lower().strip().replace(' ','_')
 	return output
@@ -63,33 +49,6 @@ def validate_sourcefile(csv_file, columns):
 		for row in reader:
 			writer.writerow([row[i] for i in to_download])
 
-def process_sourcefile(csv_file, accepted_columns):
-	with open(csv_file, 'r') as i:
-		programs = {}
-		reader = csv.reader(i)
-		header = next(reader)
-		
-		country_column_name = accepted_columns['REGION']
-		program_code_column_name = accepted_columns['PROGRAM_CODE']
-		download_url_column_name = accepted_columns['ENDPOINT']
-		file_format_column_name = accepted_columns['FILEFORMAT']
-		compressed_column_name = accepted_columns['COMPRESSED']
-		
-		country_column = header.index(country_column_name)
-		program_code_column = header.index(program_code_column_name)
-		download_url_column = header.index(download_url_column_name)
-		file_format_column = header.index(file_format_column_name)
-		compressed_column = header.index(compressed_column_name)
-		
-		for i in reader:
-			programs.setdefault(i[country_column].upper()+'/'+transform_string(i[program_code_column]).upper(),[]).extend([i[download_url_column].strip(), i[file_format_column].strip().lower(), i[compressed_column]])
-		return programs
-
-def scaffold(target_folder):
-	current_working_dir = os.getcwd()
-	if not os.path.exists(current_working_dir+'/'+target_folder):
-		os.makedirs(current_working_dir+'/'+target_folder)
-
 '''
 def define_file_type(url):
 	try:
@@ -104,17 +63,18 @@ def define_file_type(url):
 '''
 
 def main():
-	confs = open_config('config/source2.json')['DATA_SOURCE']
+	confs = open_config('config/source.json')['DATA_SOURCE']
 	filename = confs['FILENAME']
 	target_folder = confs['TARGET_FOLDER']
 	accepted_columns = confs['ACCEPTED_COLUMNS']
 	processed_data = process_sourcefile(filename, accepted_columns)
 	for i in processed_data:
-		scaffold(target_folder+'/'+i)
+		#scaffold(target_folder+'/'+i)
 		download_url = processed_data[i][0]
 		fileformat = processed_data[i][1]
 		compressed = processed_data[i][2]
-		if download_url.strip() != '':
+		access = processed_data[i][3]
+		if download_url.strip() != '' and access.strip().lower() == 'online':
 			try:
 				download_file(download_url, fileformat, compressed, target_folder+'/'+i)
 			except Exception as e:
@@ -131,7 +91,6 @@ def main():
 			except Exception as inst:
 				print(target_folder+'/'+i+'/'+f)
 				print(inst)
-
 
 if __name__ == "__main__":
 	main()
