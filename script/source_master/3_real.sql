@@ -24,7 +24,8 @@ SELECT
   reference_array,
   endpoint,
   fileformat,
-  compressed[1]
+  compressed[1] AS compressed,
+  access[1] AS access
 FROM base
 --WHERE 'online' = ANY("access")
 ORDER BY country, reference;

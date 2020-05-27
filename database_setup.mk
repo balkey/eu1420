@@ -1,4 +1,4 @@
-SHELL=/bin/bash
+\SHELL=/bin/bash
 
 TODAY:=$(shell date +"%Y_%m_%d")
 TS_NOW:=$(shell date +"%Y_%m_%d_%H_%M_%S")
