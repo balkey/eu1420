@@ -4,12 +4,12 @@ encode: make_csv
 	#TODO
 
 make_csv: uncompress
-	#rm -rf data/converted/* && mkdir -p data/converted
-	#python lib/scaffold.py -s 'CONVERTED_FOLDER'
-	#python lib/converter_controler.py
+	rm -rf data/converted/* && mkdir -p data/converted
+	python lib/scaffold.py -s 'CONVERTED_FOLDER'
+	python lib/converter_controler.py
 
 uncompress: download
-	#python lib/uncompress.py
+	python lib/uncompress.py
 
 download: database_setup
 	python lib/scaffold.py -s 'TARGET_FOLDER'

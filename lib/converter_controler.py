@@ -6,27 +6,21 @@ import os.path
 import csv
 from converters import *
 
-alls = 0
-successfulls = 0
 for dirpath, dirnames, filenames in os.walk("./data/source/"):
 	for filename in [f for f in filenames]:
-		alls += 1
 		extension = filename.split('.')[-1]
-		if extension in ['xls', 'xlsx']:
-			print(os.path.join(dirpath, filename))
-			convert_xsl(dirpath, filename)
-		elif extension in ['xml']:
-			convert_xml(dirpath, filename)
-		elif extension in ['ods']:
-			convert_ods(dirpath, filename)
-		elif extension in ['zip']:
-			print('Bypassing .zip file')
-		elif extension in ['csv']:
-			print('CSV file needs to be moved')		
-		elif extension in ['DS_Store']:
-			pass
-		else:
-			print('WHAT IS THIS? '+str(extension))
-
-print(alls)
-print(successfulls)
+		if extension not in ['zip', 'DS_Store']:
+			if extension in ['xls', 'xlsx']:
+				#print(os.path.join(dirpath, filename))
+				convert_xsl(dirpath, filename)
+				pass
+			elif extension in ['xml']:
+				convert_xml(dirpath, filename)
+				pass
+			elif extension in ['ods']:
+				convert_ods(dirpath, filename)
+			elif extension in ['csv']:
+				move_csv(dirpath, filename)
+				pass
+			else:
+				print('WHAT IS THIS? '+str(extension))
