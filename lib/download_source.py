@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import json
+from functools import wraps
 import xlrd
 import csv
 import os
@@ -9,12 +10,27 @@ import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 import magic
 import certifi
+import logging
 import urllib3
 from utils import *
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 cafile = certifi.where()
 
+logging.basicConfig(filename='logs/downloaded.log', filemode='w+', format='%(asctime)s - %(message)s')
+
+def handle_exceptions(fn):
+	@wraps(fn)
+	def wrapper(*args, **kw):
+		try:
+			return fn(*args, **kw)
+		except Exception as e:
+            #exception_handler(self.log)
+			#print(e)
+			logging.error('Error occurred with downloading file from '+str(args[0])+' to folder'+str(args[3])+' with fileformat: '+str(args[1])+'. Message: '+str(e), exc_info=False)
+	return wrapper
+
+@handle_exceptions
 def download_file(url, fileformat, compressed, target_folder):
 	params = {'stream':True}
 	headers = {'Content-type': 'application/ocsp-request',}
@@ -49,18 +65,12 @@ def validate_sourcefile(csv_file, columns):
 		for row in reader:
 			writer.writerow([row[i] for i in to_download])
 
-'''
-def define_file_type(url):
+def define_file_type(filepath):
+	print(filepath)
 	try:
-		response = requests.get(url)
-		content_type = response.headers['content-type']
-		extension = mimetypes.guess_extension(content_type)
-	except:
-		extension = 'somethings wrong'
-	if extension is None:
-		extension = 'missing'
-	return extension
-'''
+		print(magic.from_file(filepath, mime=True))
+	except Exception as inst:
+		print(inst)
 
 def main():
 	confs = open_config('config/source.json')['DATA_SOURCE']
@@ -75,22 +85,12 @@ def main():
 		compressed = processed_data[i][2]
 		access = processed_data[i][3]
 		if download_url.strip() != '' and access.strip().lower() == 'online':
-			try:
-				download_file(download_url, fileformat, compressed, target_folder+'/'+i)
-			except Exception as e:
-				#TODO: log unsuccessfull download
-				print(e)
+			download_file(download_url, fileformat, compressed, target_folder+'/'+i)
 		else:
 			pass
-		downloaded_files = os.listdir(target_folder+'/'+i)
-		for f in downloaded_files:
-			print('-------------------------------')
-			try:
-				print(target_folder+'/'+i+'/'+f)
-				print(magic.from_file(target_folder+'/'+i+'/'+f, mime=True))
-			except Exception as inst:
-				print(target_folder+'/'+i+'/'+f)
-				print(inst)
+		#downloaded_files = os.listdir(target_folder+'/'+i)
+		#for f in downloaded_files:
+			#define_file_type(target_folder+'/'+i+'/'+f)
 
 if __name__ == "__main__":
 	main()

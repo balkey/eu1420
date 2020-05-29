@@ -18,13 +18,12 @@ converted_folder = confs['CONVERTED_FOLDER']
 def handle_exceptions(fn):
 	@wraps(fn)
 	def wrapper(*args, **kw):
-		
 		try:
 			return fn(*args, **kw)
 		except Exception as e:
             #exception_handler(self.log)
-			print(e)
-			#logging.error('Error occurred with '+str(os.path.join(args[0], args[1]))+' Message: '+str(e), exc_info=False)
+			#print(e)
+			logging.error('Error occurred with '+str(os.path.join(args[0], args[1]))+' Message: '+str(e), exc_info=False)
 	return wrapper
 
 
@@ -110,7 +109,8 @@ def convert_ods(dirpath, filename):
 				value = worksheet[(row_index,col_index)].value
 				if len(str(value)) == 0:
 					value = prev_row[col_index]
-					#TODO: HERE THIS NEEDS TO BE REVISED!!!
+					#TODO: HERE THIS MIGHT NEED TO BE REVISED,
+					#SO MERGED CELLS ARE UNMERGED ON X AND Y AXIS AS WELL!
 					#if len(str(value)) == 0:
 						#value = prev_row[col_index-1]
 				row.append(value)
