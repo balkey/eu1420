@@ -12,8 +12,8 @@ from utils import *
 logging.basicConfig(filename='logs/converted.log', filemode='w+', format='%(asctime)s - %(message)s')
 
 confs = open_config('config/source.json')['DATA_SOURCE']
-target_folder = confs['TARGET_FOLDER']
-converted_folder = confs['CONVERTED_FOLDER']
+source_folder = confs['DOWNLOAD_FOLDER']
+target_folder = confs['CONVERTED_FOLDER']
 
 def handle_exceptions(fn):
 	@wraps(fn)
@@ -32,7 +32,7 @@ def convert_xsl(dirpath, filename):
 	dirpath_source = dirpath
 	filepath_source  = os.path.join(dirpath, filename)
 
-	dirpath_target = dirpath.replace(target_folder, converted_folder)
+	dirpath_target = dirpath.replace(source_folder, target_folder)
 	filepath_target = os.path.join(dirpath_target, filename)
 	
 	workbook = xlrd.open_workbook(filepath_source)
@@ -55,8 +55,8 @@ def convert_xsl(dirpath, filename):
 			all_data.append(row)
 
 		with open(''.join([filepath_target,'_',str(worksheet_name),'_',str(worksheet_index),'.csv']),'w+') as f:
+			dw = csv.writer(f)
 			for row in all_data:
-				dw = csv.writer(f)
 				dw.writerow(row)
 
 @handle_exceptions
@@ -64,7 +64,7 @@ def convert_xml(dirpath, filename):
 	dirpath_source = dirpath
 	filepath_source  = os.path.join(dirpath, filename)
 
-	dirpath_target = dirpath.replace(target_folder, converted_folder)
+	dirpath_target = dirpath.replace(source_folder, target_folder)
 	filepath_target = os.path.join(dirpath_target, filename)
 
 	e = xml.etree.ElementTree.parse(filepath_source).getroot()
@@ -94,7 +94,7 @@ def convert_ods(dirpath, filename):
 	dirpath_source = dirpath
 	filepath_source  = os.path.join(dirpath, filename)
 
-	dirpath_target = dirpath.replace(target_folder, converted_folder)
+	dirpath_target = dirpath.replace(source_folder, target_folder)
 	filepath_target = os.path.join(dirpath_target, filename)
 	workbook = ezodf.opendoc(filepath_source)
 	worksheet_index = 0
@@ -118,8 +118,8 @@ def convert_ods(dirpath, filename):
 			all_data.append(row)
 
 		with open(''.join([filepath_target,'_',str(worksheet_name),'_',str(worksheet_index),'.csv']),'w+') as f:
+			dw = csv.writer(f)
 			for row in all_data:
-				dw = csv.writer(f)
 				dw.writerow(row)
 
 @handle_exceptions
@@ -127,6 +127,6 @@ def move_csv(dirpath, filename):
 	dirpath_source = dirpath
 	filepath_source  = os.path.join(dirpath, filename)
 
-	dirpath_target = dirpath.replace(target_folder, converted_folder)
+	dirpath_target = dirpath.replace(source_folder, target_folder)
 	filepath_target = os.path.join(dirpath_target, filename)
 	copyfile(filepath_source, filepath_target)

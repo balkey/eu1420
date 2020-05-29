@@ -38,7 +38,10 @@ def download_file(url, fileformat, compressed, target_folder):
 	if compressed == '0':
 		local_filename = url.split('/')[-1]+'.'+fileformat
 	else:
-		local_filename = url.split('/')[-1]+'.zip'
+		if url.split('.')[-1] in ['zip']:
+			local_filename = url.split('/')[-1]
+		else:
+			local_filename = url.split('/')[-1]+'.zip'
 	totalbits = 0
 	if response.status_code == 200:
 		with open(target_folder+'/'+local_filename, 'wb') as f:
@@ -75,7 +78,7 @@ def define_file_type(filepath):
 def main():
 	confs = open_config('config/source.json')['DATA_SOURCE']
 	filename = confs['FILENAME']
-	target_folder = confs['TARGET_FOLDER']
+	target_folder = confs['DOWNLOAD_FOLDER']
 	accepted_columns = confs['ACCEPTED_COLUMNS']
 	processed_data = process_sourcefile(filename, accepted_columns)
 	for i in processed_data:

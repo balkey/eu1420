@@ -1,7 +1,9 @@
 SHELL=/bin/bash
 
 encode: make_csv
-	#TODO
+	rm -rf data/encoded/* && mkdir -p data/encoded
+	python lib/scaffold.py -s 'ENCODED_FOLDER'
+	python lib/encode.py
 
 make_csv: uncompress
 	rm -rf data/converted/* && mkdir -p data/converted
@@ -12,7 +14,7 @@ uncompress: download
 	python lib/uncompress.py
 
 download: database_setup
-	python lib/scaffold.py -s 'TARGET_FOLDER'
+	python lib/scaffold.py -s 'DOWNLOAD_FOLDER'
 	python lib/download_source.py
 
 database_setup: download_source
@@ -24,6 +26,8 @@ download_source: clean
 clean: start
 	mkdir -p tmp
 	mv data/source/HU tmp/
+	# Make sure that here ^
+	# you include all the manually collected files.
 	rm -rf data/* && mkdir data/source
 	mv tmp/* data/source/ && rm -rf tmp
 

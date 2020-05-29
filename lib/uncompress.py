@@ -27,7 +27,10 @@ def extract_nested_zip(zipped_file, target_folder):
 	#os.remove(zippedFile)
 	for root, dirs, files in os.walk(target_folder):
 		for filename in files:
-			if re.search(r'\.zip$', filename):
+			if filename[0] == '.':
+				os.remove(os.path.join(root, filename))				
+			#if re.search(r'\.zip$', filename):
+			elif filename.split('.')[-1] in ['zip']:
 				file_spec = os.path.join(root, filename)
 				if os.path.join(root, filename) not in unzipped:
 					extract_nested_zip(file_spec, target_folder)
