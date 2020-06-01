@@ -38,7 +38,8 @@ def predict_encoding(file_path, n_lines=20):
 			detected_encoding = 'utf-8'
 	return detected_encoding
 
-def detect_delimiter(text_sample):
+@handle_exceptions
+def detect_delimiter(text_sample, kkk):
 	dialect = sniffer.sniff(text_sample)
 	try:
 		delimiter_used = dialect.delimiter
@@ -47,7 +48,8 @@ def detect_delimiter(text_sample):
 	if delimiter_used is None:
 		delimiter_used = ','
 	else:
-		delimiter_used = ','
+		delimiter_used = dialect.delimiter
+	print(delimiter_used)
 	return delimiter_used
 
 @handle_exceptions
@@ -59,9 +61,9 @@ def encodefile(dirpath, filename, encoding):
 	filepath_target = os.path.join(dirpath_target, filename)
 
 	with open(filepath_source,'r', encoding='utf-8', errors='replace') as fi, open(filepath_target, 'w+', encoding='utf-8') as fo:
-		text_sample = fi.read(1024)
+		text_sample = fi.read(2048)
 		fi.seek(0)
-		delimiter_used = detect_delimiter(text_sample)
+		delimiter_used = detect_delimiter(text_sample, 'kkk')
 		reader=csv.reader(fi, delimiter=delimiter_used)
 		#reader=csv.reader(fi)
 		writer = csv.writer(fo, delimiter=',')
@@ -70,7 +72,7 @@ def encodefile(dirpath, filename, encoding):
 
 for dirpath, dirnames, filenames in os.walk(source_folder):
 	for filename in filenames:
-		print(os.path.join(dirpath, filename))
+		#print(os.path.join(dirpath, filename))
 		#detected_encoding = predict_encoding(os.path.join(dirpath, filename))
 		#encodefile(dirpath, filename, detected_encoding)
 		encodefile(dirpath, filename, 'utf-8')
