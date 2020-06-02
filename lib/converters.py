@@ -55,7 +55,7 @@ def convert_xsl(dirpath, filename):
 			all_data.append(row)
 
 		with open(''.join([filepath_target,'_',str(worksheet_name),'_',str(worksheet_index),'.csv']),'w+') as f:
-			dw = csv.writer(f)
+			dw = csv.writer(f, delimiter=',')
 			for row in all_data:
 				dw.writerow(row)
 
@@ -80,7 +80,7 @@ def convert_xml(dirpath, filename):
 			for table in tables:
 				table_counter +=1
 				with open(''.join([filepath_target,'_',str(container_counter),'_',str(tables_counter),'_',str(table_counter),'.csv']),'w+') as f:
-					dw = csv.writer(f)
+					dw = csv.writer(f, delimiter=',')
 					for row in table:
 						rows_out = []
 						for cells in row:
@@ -118,7 +118,7 @@ def convert_ods(dirpath, filename):
 			all_data.append(row)
 
 		with open(''.join([filepath_target,'_',str(worksheet_name),'_',str(worksheet_index),'.csv']),'w+') as f:
-			dw = csv.writer(f)
+			dw = csv.writer(f, delimiter=',')
 			for row in all_data:
 				dw.writerow(row)
 

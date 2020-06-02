@@ -39,7 +39,7 @@ def predict_encoding(file_path, n_lines=20):
 	return detected_encoding
 
 @handle_exceptions
-def detect_delimiter(text_sample, kkk):
+def detect_delimiter(text_sample, filepath_source):
 	dialect = sniffer.sniff(text_sample)
 	try:
 		delimiter_used = dialect.delimiter
@@ -49,6 +49,7 @@ def detect_delimiter(text_sample, kkk):
 		delimiter_used = ','
 	else:
 		delimiter_used = dialect.delimiter
+	print(filepath_source)
 	print(delimiter_used)
 	return delimiter_used
 
@@ -63,7 +64,7 @@ def encodefile(dirpath, filename, encoding):
 	with open(filepath_source,'r', encoding='utf-8', errors='replace') as fi, open(filepath_target, 'w+', encoding='utf-8') as fo:
 		text_sample = fi.read(2048)
 		fi.seek(0)
-		delimiter_used = detect_delimiter(text_sample, 'kkk')
+		delimiter_used = detect_delimiter(text_sample, filepath_source)
 		reader=csv.reader(fi, delimiter=delimiter_used)
 		#reader=csv.reader(fi)
 		writer = csv.writer(fo, delimiter=',')
