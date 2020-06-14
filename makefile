@@ -1,4 +1,6 @@
 SHELL=/bin/bash
+prepare_final: detect_header
+	echo 'WIP'
 
 detect_header: encode
 	rm -rf data/header_detected/* && mkdir -p data/header_detected

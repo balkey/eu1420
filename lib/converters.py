@@ -8,6 +8,8 @@ import xml.etree.ElementTree
 import logging
 from shutil import copyfile
 from utils import *
+import os
+os.environ["PYTHONIOENCODING"] = "utf-8"
 
 logging.basicConfig(filename='logs/converted.log', filemode='w+', format='%(asctime)s - %(message)s')
 
@@ -26,6 +28,11 @@ def handle_exceptions(fn):
 			logging.error('Error occurred with '+str(os.path.join(args[0], args[1]))+' Message: '+str(e), exc_info=False)
 	return wrapper
 
+
+def convert_unicode_to_utf8(value):
+	if isinstance(value, str):
+		value = value.encode('utf8')
+	return value
 
 @handle_exceptions
 def convert_xsl(dirpath, filename):
@@ -47,7 +54,8 @@ def convert_xsl(dirpath, filename):
 		for row_index in range(worksheet.nrows):
 			row= []
 			for col_index in range(worksheet.ncols):
-				value = worksheet.cell(rowx=row_index,colx=col_index).value
+				#value = convert_unicode_to_utf8(str(worksheet.cell(rowx=row_index,colx=col_index).value))
+				value = str(worksheet.cell(rowx=row_index,colx=col_index).value)
 				if len(str(value)) == 0:
 					value = prev_row[col_index]
 				row.append(value)
@@ -80,13 +88,14 @@ def convert_xml(dirpath, filename):
 			for table in tables:
 				table_counter +=1
 				with open(''.join([filepath_target,'_',str(container_counter),'_',str(tables_counter),'_',str(table_counter),'.csv']),'w+') as f:
-					dw = csv.writer(f, delimiter=',')
+					dw = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 					for row in table:
 						rows_out = []
 						for cells in row:
 							for cell in cells:
 								for value in cell:
-									rows_out.append(value.text)
+									#rows_out.append(convert_unicode_to_utf8(value.text))
+									rows_out.append(str(value.text))
 						dw.writerow(rows_out)
 
 @handle_exceptions
@@ -106,9 +115,10 @@ def convert_ods(dirpath, filename):
 		for row_index in range(worksheet.nrows()):
 			row= []
 			for col_index in range(worksheet.ncols()):
-				value = worksheet[(row_index,col_index)].value
+				#value = convert_unicode_to_utf8(str(worksheet[(row_index,col_index)].value))
+				value = str(worksheet[(row_index,col_index)].value)
 				if len(str(value)) == 0:
-					value = prev_row[col_index]
+					value = str(prev_row[col_index])
 					#TODO: HERE THIS MIGHT NEED TO BE REVISED,
 					#SO MERGED CELLS ARE UNMERGED ON X AND Y AXIS AS WELL!
 					#if len(str(value)) == 0:

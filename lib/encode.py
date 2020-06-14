@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import unicodecsv as csv
 import logging
 from functools import wraps
 from utils import *
 import chardet
 from itertools import islice
+import chardet
+import os
+os.environ["PYTHONIOENCODING"] = "utf-8"
 
 logging.basicConfig(filename='logs/encoded.log', filemode='w+', format='%(asctime)s - %(message)s')
 
@@ -27,7 +29,7 @@ def handle_exceptions(fn):
 			logging.error('Error occurred with encoding file '+str(args[1])+' from folder '+str(args[0])+'. Message: '+str(e), exc_info=False)
 	return wrapper
 
-def predict_encoding(file_path, n_lines=20):
+def predict_encoding(file_path, n_lines=200):
 	'''Predict a file's encoding using chardet'''
 
 	# Open the file as binary data
@@ -45,7 +47,7 @@ def detect_delimiter(text_sample, filepath_source):
 		delimiter_used = dialect.delimiter
 	except:
 		delimiter_used = ','
-	if delimiter_used is None:
+	if delimiter_used is None or delimiter_used.strip() == '' or delimiter_used.strip is None:
 		delimiter_used = ','
 	else:
 		delimiter_used = dialect.delimiter
@@ -61,12 +63,13 @@ def encodefile(dirpath, filename, encoding):
 	dirpath_target = dirpath.replace(source_folder, target_folder)
 	filepath_target = os.path.join(dirpath_target, filename)
 
-	with open(filepath_source,'r', encoding='utf-8', errors='replace') as fi, open(filepath_target, 'w+', encoding='utf-8') as fo:
-		text_sample = fi.read(2048)
+	#with open(filepath_source,'rb') as fe:
+	#	result = chardet.detect(fe.read(1024**2))
+	with open(filepath_source,'r', encoding='utf-8', errors='ignore') as fi, open(filepath_target, 'w+') as fo:
+		text_sample = fi.read(1024**2)
 		fi.seek(0)
 		delimiter_used = detect_delimiter(text_sample, filepath_source)
 		reader=csv.reader(fi, delimiter=delimiter_used)
-		#reader=csv.reader(fi)
 		writer = csv.writer(fo, delimiter=',')
 		for row in reader:
 			writer.writerow(row)

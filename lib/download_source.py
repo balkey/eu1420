@@ -13,6 +13,8 @@ import certifi
 import logging
 import urllib3
 from utils import *
+import os
+os.environ["PYTHONIOENCODING"] = "utf-8"
 
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 cafile = certifi.where()

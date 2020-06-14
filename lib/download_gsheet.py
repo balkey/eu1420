@@ -3,9 +3,10 @@
 
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import csv
 import argparse
 from utils import *
+import os
+os.environ["PYTHONIOENCODING"] = "utf-8"
 
 parser = argparse.ArgumentParser(description='Dump to a .csv file from Google worksheets')
 parser.add_argument('-k','--api_key', help='Provide a valid API key for Google Drive', required=True)
