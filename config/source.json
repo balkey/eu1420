@@ -4,6 +4,7 @@
     "DOWNLOAD_FOLDER": "data/source/",
     "CONVERTED_FOLDER": "data/converted/",
     "ENCODED_FOLDER": "data/encoded/",
+    "HEADER_DETECTED_FOLDER": "data/header_detected/",
     "INPUT_FOLDER": "data/input/",
     "ACCEPTED_COLUMNS": {
       "REGION": "country",
