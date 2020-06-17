@@ -24,3 +24,5 @@ for dirpath, dirnames, filenames in os.walk("./data/source/"):
 				pass
 			else:
 				print('WHAT IS THIS? '+str(extension))
+				print(dirpath)
+				print(filename)

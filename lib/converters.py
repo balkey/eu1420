@@ -56,8 +56,13 @@ def convert_xsl(dirpath, filename):
 			for col_index in range(worksheet.ncols):
 				#value = convert_unicode_to_utf8(str(worksheet.cell(rowx=row_index,colx=col_index).value))
 				value = str(worksheet.cell(rowx=row_index,colx=col_index).value)
-				if len(str(value)) == 0:
-					value = prev_row[col_index]
+				if value is not None:
+					value =	value.replace('\n', ' ').replace('\r', ' ')
+				else:
+					if prev_row[col_index] is not None:
+						value = prev_row[col_index].replace('\n', ' ').replace('\r', ' ')
+					else:
+						value = ''
 				row.append(value)
 			prev_row = row
 			all_data.append(row)
@@ -116,9 +121,14 @@ def convert_ods(dirpath, filename):
 			row= []
 			for col_index in range(worksheet.ncols()):
 				#value = convert_unicode_to_utf8(str(worksheet[(row_index,col_index)].value))
-				value = str(worksheet[(row_index,col_index)].value)
-				if len(str(value)) == 0:
-					value = str(prev_row[col_index])
+				value = str(worksheet[(row_index,col_index)].value)			
+				if value is not None:
+					value = value.replace('\n', ' ').replace('\r', ' ')
+				else:
+					if prev_row[col_index] is not None:
+						value = str(prev_row[col_index]).replace('\n', ' ').replace('\r', ' ')
+					else:
+						value = ''
 					#TODO: HERE THIS MIGHT NEED TO BE REVISED,
 					#SO MERGED CELLS ARE UNMERGED ON X AND Y AXIS AS WELL!
 					#if len(str(value)) == 0:

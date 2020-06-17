@@ -9,7 +9,6 @@ import logging
 from functools import wraps
 from shutil import copyfile
 from utils import *
-import os
 os.environ["PYTHONIOENCODING"] = "utf-8"
 
 logging.basicConfig(filename='logs/header_detected.log', filemode='w+', format='%(asctime)s - %(message)s')
@@ -32,6 +31,18 @@ def handle_exceptions(fn):
 def create_directory(dirpath):
 	if not os.path.exists(dirpath):
 		os.makedirs(dirpath)
+
+def name_missing_column_headers(header):
+	counter = 1
+	final_header = []
+	for i in header:
+		if i.strip() != '':
+			final_header.append(i)
+		else:
+			final_header.append('missing_column_name_'+str(counter))
+			counter +=1
+	return final_header
+
 
 @handle_exceptions
 def get_header(dirpath, filename):
@@ -70,7 +81,8 @@ def get_header(dirpath, filename):
 				with open(filepath_source, 'r+', encoding='utf-8') as ff:
 					detected_header_row_nr = i
 					detected_header_content = next(itertools.islice(csv.reader(ff), i, None))
-					detected_header_content_clean = [i.replace('\r', ' ').replace('\n', ' ') for i in detected_header_content]
+					detected_header_content_clean_base = [i.replace('\r', ' ').replace('\n', ' ') for i in detected_header_content]
+					detected_header_content_clean = name_missing_column_headers(detected_header_content_clean_base)
 					header_config.append({"row_number": i, "content": detected_header_content_clean, "content_width": len(detected_header_content_clean)})
 			json.dump(header_config, fo, indent=4, sort_keys=True, ensure_ascii=False)
 			#writer.writerow(detected_header_content_clean)
