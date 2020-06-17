@@ -51,12 +51,16 @@ def get_header(dirpath, filename):
 				dicto.append(i)
 				max_length = row_length
 	
-	detected_headers = os.path.join(dirpath_target,'detected_headers')
-	final_headers = os.path.join(dirpath_target,'final_headers')
-	create_directory(detected_headers)
-	create_directory(final_headers)
+	detected_headers_folder = os.path.join(dirpath_target,'detected_headers')
+	create_directory(detected_headers_folder)
+	detected_headers_file = os.path.join(detected_headers_folder,filename)
 	
-	detected_headers_file = os.path.join(detected_headers,filename)
+	final_files_folder = os.path.join(dirpath_target,'files')
+	create_directory(final_files_folder)
+	final_files_file = os.path.join(final_files_folder,filename)
+
+	detected_headers_file = os.path.join(detected_headers_folder,filename)	
+
 	with open(detected_headers_file, 'w+', encoding='utf-8') as fo:
 	#with open(detected_headers_file, 'w+', encoding='utf-8') as fo:
 		writer = csv.writer(fo, delimiter=',')
@@ -70,10 +74,12 @@ def get_header(dirpath, filename):
 					header_config.append({"row_number": i, "content": detected_header_content_clean, "content_width": len(detected_header_content_clean)})
 			json.dump(header_config, fo, indent=4, sort_keys=True, ensure_ascii=False)
 			#writer.writerow(detected_header_content_clean)
+	
+	pre, ext = os.path.splitext(detected_headers_file)
+	os.rename(detected_headers_file, pre + '.json')
+	copyfile(filepath_source, final_files_file)
 
-	copyfile(filepath_source, filepath_target)
-
-for dirpath, dirnames, filenames in os.walk("./data/encoded/"):
+for dirpath, dirnames, filenames in os.walk(source_folder):
 	for filename in [f for f in filenames if f.split('.')[-1] in ['csv']]:
 		print(os.path.join(dirpath, filename))
 		try:

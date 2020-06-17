@@ -62,7 +62,7 @@ def convert_xsl(dirpath, filename):
 			prev_row = row
 			all_data.append(row)
 
-		with open(''.join([filepath_target,'_',str(worksheet_name),'_',str(worksheet_index),'.csv']),'w+') as f:
+		with open(''.join([filepath_target,'_',str(worksheet_index),'_',str(worksheet_name),'.csv']),'w+') as f:
 			dw = csv.writer(f, delimiter=',')
 			for row in all_data:
 				dw.writerow(row)
@@ -127,7 +127,7 @@ def convert_ods(dirpath, filename):
 			prev_row = row
 			all_data.append(row)
 
-		with open(''.join([filepath_target,'_',str(worksheet_name),'_',str(worksheet_index),'.csv']),'w+') as f:
+		with open(''.join([filepath_target,'_',str(worksheet_index),'_',str(worksheet_name),'.csv']),'w+') as f:
 			dw = csv.writer(f, delimiter=',')
 			for row in all_data:
 				dw.writerow(row)

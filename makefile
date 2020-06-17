@@ -1,11 +1,13 @@
 SHELL=/bin/bash
 prepare_final: detect_header
-	echo 'WIP'
+	rm -rf data/input/* && mkdir -p data/input
+	python lib/scaffold.py -s 'INPUT_FOLDER'
+	python lib/rename_and_copy.py
 
 detect_header: encode
-	rm -rf data/header_detected/* && mkdir -p data/header_detected
-	python lib/scaffold.py -s 'HEADER_DETECTED_FOLDER'
-	python lib/detect_header.py
+	#rm -rf data/header_detected/* && mkdir -p data/header_detected
+	#python lib/scaffold.py -s 'HEADER_DETECTED_FOLDER'
+	#python lib/detect_header.py
 
 encode: make_csv
 	#rm -rf data/encoded/* && mkdir -p data/encoded
