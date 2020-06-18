@@ -63,7 +63,7 @@ for dirpath, dirnames, filenames in os.walk(source_folder):
 			with open(os.path.join(dirpath,filename), 'r') as json_file:
 				data = json.load(json_file)
 				if len(data) > 0:
-					data[0]['file_name'] = os.path.join(dirpath,pre + '.csv')
+					data[0]['file_name'] = os.path.join(dirpath,pre + '_clean.csv')
 					data[0]['table_name'] = pre
 					raw_content = data[0]['content']
 					data[0]['pheader'] = transform_postgresheader(raw_content)
@@ -71,5 +71,7 @@ for dirpath, dirnames, filenames in os.walk(source_folder):
 					write_sql_load_scripts(data, dirpath_target)
 				else:
 					pass
+			with open(filepath_target, 'w+') as fo:
+				json.dump(data, fo, indent=4, sort_keys=True, ensure_ascii=False)
 		else:
 			copyfile(filepath_source,filepath_target)
