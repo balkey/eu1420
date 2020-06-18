@@ -1,13 +1,19 @@
 SHELL=/bin/bash
+
+final: prepare_final
+	rm -rf data/input_final/* && mkdir -p data/input_final
+	python lib/scaffold.py -s 'INPUT_FINAL_FOLDER'
+	python lib/create_sql_scripts.py
+
 prepare_final: detect_header
-	rm -rf data/input/* && mkdir -p data/input
-	python lib/scaffold.py -s 'INPUT_FOLDER'
-	python lib/rename_and_copy.py
+	#rm -rf data/input/* && mkdir -p data/input
+	#python lib/scaffold.py -s 'INPUT_FOLDER'
+	#python lib/rename_and_copy.py
 
 detect_header: encode
-	rm -rf data/header_detected/* && mkdir -p data/header_detected
-	python lib/scaffold.py -s 'HEADER_DETECTED_FOLDER'
-	python lib/detect_header.py
+	#rm -rf data/header_detected/* && mkdir -p data/header_detected
+	#python lib/scaffold.py -s 'HEADER_DETECTED_FOLDER'
+	#python lib/detect_header.py
 
 encode: make_csv
 	#rm -rf data/encoded/* && mkdir -p data/encoded

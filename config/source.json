@@ -6,6 +6,8 @@
     "ENCODED_FOLDER": "data/encoded/",
     "HEADER_DETECTED_FOLDER": "data/header_detected/",
     "INPUT_FOLDER": "data/input/",
+    "INPUT_SAFE_FOLDER": "data/input_safe/",
+    "INPUT_FINAL_FOLDER": "data/input_final/",
     "ACCEPTED_COLUMNS": {
       "REGION": "country",
       "PROGRAM_CODE": "reference",
