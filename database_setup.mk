@@ -23,3 +23,4 @@ create_source_master: start
 start:
 	$(DB_ACCESS) < script/schemas/1_create.sql
 	$(DB_ACCESS) < script/udfs/safe_cast.sql
+	$(DB_ACCESS) < script/udfs/to_timestamp_from_excel.sql
