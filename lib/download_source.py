@@ -54,22 +54,6 @@ def download_file(url, fileformat, compressed, target_folder):
 					f.write(chunk)
 		return local_filename
 
-def transform_string(input):
-	output = input.lower().strip().replace(' ','_')
-	return output
-
-def validate_sourcefile(csv_file, columns):
-	with open(csv_file, 'r') as i, open(csv_file[:-4]+'_clean.csv', 'w+') as o:
-		reader = csv.reader(i)
-		writer = csv.writer(o)
-		header = next(reader)
-		accepted_columns = set([columns[k] for k in columns])
-		valid_header = [transform_string(i) for i in header if transform_string(i) in accepted_columns] 
-		to_download = [header.index(i) for i in header if transform_string(i) in accepted_columns]
-		writer.writerow(valid_header)
-		for row in reader:
-			writer.writerow([row[i] for i in to_download])
-
 def define_file_type(filepath):
 	print(filepath)
 	try:
