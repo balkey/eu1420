@@ -5,6 +5,7 @@ nr_of_columns AS (
     COUNT(COLUMN_NAME) AS nr_of_columns
   FROM information_schema.columns
   WHERE table_schema = 'raw'
+    AND table_name NOT IN ('header_detected_1', 'header_detected_2', 'source_master')
   GROUP BY table_name
 ),
 
@@ -28,4 +29,4 @@ vw AS (
 SELECT
   *
 FROM vw
-ORDER BY 3 DESC;
+ORDER BY 1 DESC;
