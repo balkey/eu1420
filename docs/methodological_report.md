@@ -386,3 +386,21 @@ Enviromental variables are stored and loaded from configuration files.
 The project's source code is stored in a Github repository, which is currently a private repository aligned with the Commisions privacy requirements (the source code at this point should not be publicly accessible).
 
 Upon request access can be provided to the repository [EU1420](https://github.com/balkey/eu1420).
+
+## 25. Next steps
+
+In the second part of the project, the following steps will be made:
+
+- **mapping of column names and meaning**: each individual column name will be mapped to a standardized value chosen from a distinct list of possible values. This list will be constructed from the columns across the entire project, this way ensuring that the columns representing the same values are named exactly the same across member states and programmes.
+
+- **identification of compulsory columns and geodata**: once the columns of all tables are standardized, we can tag if the compulsory columns are present and if the table contains any kind of geolocational information and what kind. This metadata will be provided in the final report.
+
+- **data cleaning and transformation**: after the set of columns which we'd like to include in the final master dataset are identified, we'll start validating the datatypes of those columns and make transformation of the values if necessary. This will include:
+
+	- currency conversions
+	- removing non numeric characters from numeric fields
+	- removing partially filled rows where compulsory data is missing or destroyed
+	- removing duplications
+	- ...
+
+- **merging individual datasets into a master table**: the last step will include merging the individual datasets into one master datatable and exporting the contents of that table into a `.csv` export for further reuse.

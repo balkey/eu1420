@@ -165,7 +165,7 @@ Character encoding contained some errors where the source was in .csv format and
 
 ## 8. Files with no header or detectable tabular structure
 
-For the following programme codes and files it was either not possible to detect a valid header or the data could not be converted to a tabular structure. The file_sheet_index following the underscore appended to the programme codes indicate the worksheet's index within the original source file workbook, or if there's multiple files belonging to the same programme code, their index according to alphabetical order.
+For the following programme codes and files it was either not possible to detect a valid header or the data could not be converted to a tabular structure. The `file_sheet_index` following the underscore appended to the programme codes indicate the worksheet's index within the original source file workbook, or if there's multiple files belonging to the same programme code, their index according to alphabetical order. Most cases included here are just not tabular data: the worksheet within the workbook contains some sort of description or free text addition to the data. 
 
 ```
 country|reference      |reference_array                                                                                                  |endpoint                                                                                                                                                                                                                                                       |file_sheet_index|
@@ -579,7 +579,7 @@ table_name        |nr_of_columns|nr_of_rows|
 
 ## 11. Resultset 4: List of individual columns
 
-This list is accessible [online here](), as it would be too long to include in this report.
+This list is accessible [online here](https://docs.google.com/spreadsheets/d/1cdzdbCMk5faY77_MPwnuYzFtW14_brak5oLKz8XrKU4/edit?usp=sharing), as it would be too long to include in this report.
 
 ## 12. Summary
 
