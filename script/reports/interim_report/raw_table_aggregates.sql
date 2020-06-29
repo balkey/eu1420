@@ -29,4 +29,4 @@ vw AS (
 SELECT
   *
 FROM vw
-ORDER BY 1 DESC;
+ORDER BY 1;

@@ -67,6 +67,6 @@ SELECT
   reference,
   reference_array,
   endpoint,
-  file_sheet_index
+  file_sheet_index::INTEGER
 FROM vw
-ORDEr BY 1,2,5;
+ORDER BY 1,2,5;

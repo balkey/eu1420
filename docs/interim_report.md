@@ -228,6 +228,8 @@ UK          |          6|      1888|
 
 ## 10. Resultset 2: number of rows by programme code
 
+The following report contains the number of files and rows loaded by programme code:
+
 ```
 programme_code |nr_of_files|nr_of_rows|
 ---------------|-----------|----------|
@@ -579,8 +581,4 @@ table_name        |nr_of_columns|nr_of_rows|
 
 ## 11. Resultset 4: List of individual columns
 
-This list is accessible [online here](https://docs.google.com/spreadsheets/d/1cdzdbCMk5faY77_MPwnuYzFtW14_brak5oLKz8XrKU4/edit?usp=sharing), as it would be too long to include in this report.
-
-## 12. Summary
-
-## 13. Next steps
+This list is accessible [online here](https://docs.google.com/spreadsheets/d/1cdzdbCMk5faY77_MPwnuYzFtW14_brak5oLKz8XrKU4/edit?usp=sharing), as it is too long to include in this report.
