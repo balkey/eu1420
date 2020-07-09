@@ -15,7 +15,7 @@ target_folder = confs['INPUT_FOLDER']
 
 for dirpath, dirnames, filenames in os.walk(source_folder):
 	valid_filenames = [f for f in sorted(filenames) if f.split('.')[-1] in ['csv', 'json']] 
-	for filename in valid_filenames:
+	for index_nr, filename in enumerate(valid_filenames, start=1):
 		file_type = dirpath.split('/')[-1]
 		program_name = dirpath.split('/')[-2]
 		if file_type == 'files':
@@ -29,6 +29,3 @@ for dirpath, dirnames, filenames in os.walk(source_folder):
 		dirpath_target = dirpath.split(file_type)[0].replace(source_folder, target_folder)
 		filepath_target = os.path.join(dirpath_target, filename_final)
 		copyfile(filepath_source,filepath_target)
-	
-	else:
-		pass
