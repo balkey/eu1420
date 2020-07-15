@@ -1,6 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+This file contains logic that from a valid csv file
+it will try to detect headers. The logic is the following:
+	- 1. Iterate over all the rows of an input file
+	- 2. Detect the length of the row containing non null values
+	- 3. If the detected length is longer than the previously detected
+		longest row, save it as a header candidate
+	- 4. Set the longest row's value to the detected length.
+	- 5. Save the row's rownumber within the file, the row's lenght and
+		the row's contents into a .json file
+'''
+
 import os
 import csv
 import json
@@ -73,7 +85,6 @@ def get_header(dirpath, filename):
 	detected_headers_file = os.path.join(detected_headers_folder,filename)	
 
 	with open(detected_headers_file, 'w+', encoding='utf-8') as fo:
-	#with open(detected_headers_file, 'w+', encoding='utf-8') as fo:
 		writer = csv.writer(fo, delimiter=',')
 		if len(dicto) > 0:
 			header_config = []
@@ -85,7 +96,6 @@ def get_header(dirpath, filename):
 					detected_header_content_clean = name_missing_column_headers(detected_header_content_clean_base)
 					header_config.append({"row_number": i, "content": detected_header_content_clean, "content_width": len(detected_header_content_clean)})
 			json.dump(header_config, fo, indent=4, sort_keys=True, ensure_ascii=False)
-			#writer.writerow(detected_header_content_clean)
 	
 	pre, ext = os.path.splitext(detected_headers_file)
 	os.rename(detected_headers_file, pre + '.json')

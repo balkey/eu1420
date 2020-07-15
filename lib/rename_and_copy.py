@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+The script renames files with .csv and .json extensions
+after the folder name they reside at.
+
+Finally it copies them to a folder specified as "target_folder".
+'''
+
 import os
 from shutil import copyfile
 import logging

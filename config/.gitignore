@@ -1,3 +1,4 @@
 *
 !.gitignore
 !source.json
+!env_example.env

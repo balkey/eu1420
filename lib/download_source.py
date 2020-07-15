@@ -1,6 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+The script downloads files from urls. The file takes a
+jsopn file as a configuration input, where the following fields need
+to be specified under a "DATA_SOURCE" dictionary object:
+	- FILENAME: the filepath of the .csv containing the downloading details
+	- DOWNLOAD_FOLDER: the target where the files need to be downloaded to
+	- ACCPETED_COLUMNS: the list array of those columns which are to be used in the specidfied .csv
+
+The .csv file should contain the following columns:
+	- REGION: region code of the file
+	- PROGRAM_CODE: program code / CCI / identifier the file belongs to
+	- ENDPOINT: a http address where the file is located at
+	- COMPRESSED: boolean if the file is compressed
+	- ACCESS: value "online" controls, if the file is expected to be accessible
+		Rows with other values will be discarded.
+'''
+
+
 import json
 from functools import wraps
 import xlrd

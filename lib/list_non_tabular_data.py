@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+A helper script used to print filepaths to the console, where a possible
+header candidate could not be detected.
+
+NOT USED IN THE PRODUCTIONAL PIPELINE!
+'''
+
 import csv
 import os
 import itertools

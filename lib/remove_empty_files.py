@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+The script walk through a folder structure
+and delete those files which are empty.
+'''
+
 import os
 from utils import *
 

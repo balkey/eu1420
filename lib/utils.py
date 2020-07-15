@@ -1,6 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+This is a collection of functions that are general enough to
+be reused in the scope of several Python scripts.
+
+The need to be imported at each Python script in the following
+manner:
+
+from utils import *
+'''
+
 import json
 import csv
 import os

@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+This file manages downloading a sheet from Google Drive as a .csv file
+See the arguments required to run the file.
+'''
+
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import argparse

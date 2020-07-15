@@ -1,8 +1,26 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+'''
+This is a controller script, that ensures that all
+input files contain only the specified columns.
+If a column is not specified, it will be discarded from
+the final output.
+The input of this script is a .json file. This needs to contain the
+following fields:
+	- pheader: a list array containing the valid header values
+	- empty_columns: a list array containing which columns should be discarded,
+		even if they are a member of pheader values
+	- clean_file_name: the input file of the function
+	- final_file_name: the output file of the function
+'''
+
 import csv
 import os
 import itertools
 from utils import *
 import subprocess
+
 os.environ["PYTHONIOENCODING"] = "utf-8"
 
 confs = open_config('config/source.json')['DATA_SOURCE']

@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+'''
+The script unzpis a compressed file if it's extension equals to "zip".
+The internal folder structure of the compressed file is discarded
+from the output, only the files at the lowest level of the structure are
+kept.
+'''
+
 import zipfile
 import re
 import os
@@ -13,8 +23,6 @@ def handle_exceptions(fn):
 		try:
 			return fn(*args, **kw)
 		except Exception as e:
-            #exception_handler(self.log)
-			#print(e)
 			logging.error('Error occurred with uncompressing file '+str(args[0])+' to folder'+str(args[1])+'. Message: '+str(e), exc_info=False)
 	return wrapper
 
@@ -24,12 +32,10 @@ def extract_nested_zip(zipped_file, target_folder):
 	with zipfile.ZipFile(zipped_file, 'r') as zfile:
 		zfile.extractall(path=target_folder)
 		unzipped.append(zipped_file)
-	#os.remove(zippedFile)
 	for root, dirs, files in os.walk(target_folder):
 		for filename in files:
 			if filename[0] == '.':
 				os.remove(os.path.join(root, filename))				
-			#if re.search(r'\.zip$', filename):
 			elif filename.split('.')[-1] in ['zip']:
 				file_spec = os.path.join(root, filename)
 				if os.path.join(root, filename) not in unzipped:

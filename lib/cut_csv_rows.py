@@ -1,6 +1,31 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+This script takes 2 inputs:
+	- pheader: an accepted header stored in a list array
+	- row_number: an integer
+
+These values need to come from a .json config file.
+
+The script takes the "row_number" argument, and cuts of all
+rows before that row, including the row specified.
+
+Then the values of the "pheader argument" are appended to the
+first row of the .csv file.
+
+The script does not specify which .csv or json file is its scope.
+
+A source_folder needs to be specified (currently this comes
+from a separate configuration file). Then the script walks
+through that folder and looks for all .json files. These will be
+the config files of the script.
+
+Another prerequisite is that a .csv file needs to reside in the
+same folder, with the same name as the .json file, just different
+extension.
+'''
+
 import csv
 import os
 import itertools

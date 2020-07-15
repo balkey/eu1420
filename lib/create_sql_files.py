@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+This script includes the generation of SQL scripts (table creation and importing / loading).
+
+The input of the script is a JSON object, which needs to contain the following fields:
+	- pheader: the desired header as a list array
+	- empty_columns: those fieldnames which are to be excluded from the script's scope
+	- table_name: the desired table's name
+'''
+
 import os
 from shutil import copyfile
 import logging

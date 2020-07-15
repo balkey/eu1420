@@ -1,6 +1,15 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+This script controls the converting of source files.
+Three different parsers are implemented:
+	- xls / xlsx
+	- xml
+	- ods
+The parser scripts are in converters.py
+'''
+
 import os
 import os.path
 import csv

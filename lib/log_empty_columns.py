@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+The script logs, if in a specified .csv file there are columns, which have no values at
+any of the rows belionging to them. The script's input is a .json file, where the .csv
+file to be examined is specified at the "clean_file_name" column.
+The list array of empty columns will be logged in a spearate .json file.
+'''
+
 import csv
 import os
 import itertools
@@ -34,7 +41,6 @@ def log_empty_columns(filepath):
 
 for dirpath, dirnames, filenames in os.walk(source_folder):
 	if not dirnames:
-		#for filename in [f for f in filenames if f == '2014RO_8.json']:
 		for filename in [f for f in filenames if f.split('.')[-1] in ['json']]:
 			with open(os.path.join(dirpath,filename), 'r') as json_file:
 				conf_data = json.load(json_file)

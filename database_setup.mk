@@ -1,5 +1,10 @@
 \SHELL=/bin/bash
 
+# The controller script for preparing the database,
+# creating schemas and loading the source master data
+# sheet that contains the endpoints and supporting
+# information about the endpoints / files themselves.
+
 TODAY:=$(shell date +"%Y_%m_%d")
 TS_NOW:=$(shell date +"%Y_%m_%d_%H_%M_%S")
 LOG_DATE_FORMAT='%Y-%m-%d %H:%M:%S'

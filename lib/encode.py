@@ -1,6 +1,12 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+This scripts converts a .csv file into UTF-8
+and tries to detect the used delimiter in the 
+.csv file based on the first 2MB of data.
+'''
+
 import logging
 from functools import wraps
 from utils import *
@@ -24,15 +30,10 @@ def handle_exceptions(fn):
 		try:
 			return fn(*args, **kw)
 		except Exception as e:
-            #exception_handler(self.log)
-			#print(e)
 			logging.error('Error occurred with encoding file '+str(args[1])+' from folder '+str(args[0])+'. Message: '+str(e), exc_info=False)
 	return wrapper
 
 def predict_encoding(file_path, n_lines=200):
-	'''Predict a file's encoding using chardet'''
-
-	# Open the file as binary data
 	with open(file_path, 'rb') as f:
 		rawdata = b''.join([f.readline() for _ in range(n_lines)])
 		detected_encoding = chardet.detect(rawdata)['encoding']
@@ -63,8 +64,6 @@ def encodefile(dirpath, filename, encoding):
 	dirpath_target = dirpath.replace(source_folder, target_folder)
 	filepath_target = os.path.join(dirpath_target, filename)
 
-	#with open(filepath_source,'rb') as fe:
-	#	result = chardet.detect(fe.read(1024**2))
 	with open(filepath_source,'r', encoding='utf-8', errors='ignore') as fi, open(filepath_target, 'w+') as fo:
 		text_sample = fi.read(1024**2)
 		fi.seek(0)
@@ -76,7 +75,4 @@ def encodefile(dirpath, filename, encoding):
 
 for dirpath, dirnames, filenames in os.walk(source_folder):
 	for filename in filenames:
-		#print(os.path.join(dirpath, filename))
-		#detected_encoding = predict_encoding(os.path.join(dirpath, filename))
-		#encodefile(dirpath, filename, detected_encoding)
 		encodefile(dirpath, filename, 'utf-8')

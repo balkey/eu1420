@@ -1,6 +1,17 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+This script ensures that a given header only contains elements / field names
+that are accepted by PostgreSQL as column names.
+
+Th input is a JSON object where "content" field need to contain the desired header
+values as a list array.
+
+The valid headers will be dumped to another .json file, where the transformed header values will
+be included in the "pheader" field.
+'''
+
 import os
 from shutil import copyfile
 import logging

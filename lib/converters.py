@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+'''
+This script includes the converter parser scripts.
+The functions are called from converter_controler.py
+'''
+
 import xlrd
 import ezodf
 from functools import wraps

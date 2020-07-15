@@ -1,5 +1,7 @@
 SHELL=/bin/bash
 
+# The main controller scipt of the whole dataflow.
+
 load: tables
 	. load.sh
 
@@ -10,10 +12,10 @@ final: prepare_final
 	rm -rf data/input_final/* && mkdir -p data/input_final
 	python lib/scaffold.py -s 'INPUT_FINAL_FOLDER'
 	python lib/create_valid_headers.py
-	python lib/update_csv_header.py
+	python lib/cuts_csv_rows.py
 	python lib/log_empty_columns.py
 	python lib/create_sql_files.py
-	python lib/cut_csv_files.py
+	python lib/cut_csv_columns.py
 
 prepare_final: detect_header
 	rm -rf data/input/* && mkdir -p data/input
