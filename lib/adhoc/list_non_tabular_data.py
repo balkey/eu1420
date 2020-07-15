@@ -8,10 +8,14 @@ header candidate could not be detected.
 NOT USED IN THE PRODUCTIONAL PIPELINE!
 '''
 
-import csv
 import os
+import sys 
+sys.path.insert(0,str(os.getcwd()))
+
+import csv
 import itertools
-from utils import *
+from lib.utils import *
+
 os.environ["PYTHONIOENCODING"] = "utf-8"
 
 confs = open_config('config/source.json')['DATA_SOURCE']
