@@ -29,5 +29,7 @@ for dirpath, dirnames, filenames in os.walk(source_folder):
 				conf_data = json.load(json_file)
 				if len(conf_data) == 0:
 					print(pre)
+				else:
+					pass
 	else:
 		pass

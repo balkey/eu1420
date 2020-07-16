@@ -1,0 +1,1 @@
+\copy raw.column_header_mapping FROM 'data/adhoc/raw_column_header_mapping.csv' DELIMITER ',' CSV HEADER;
