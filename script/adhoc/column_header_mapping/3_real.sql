@@ -5,10 +5,11 @@ WITH
 missing_names AS (
   SELECT
     pheader,
-    ARRAY[original_header] AS original_header,
-    ARRAY[country_code] AS country_code,
-    ARRAY[programme_code] AS programme_code,
-    ARRAY[table_name] AS table_name
+    original_header,
+    country_code,
+    programme_code,
+    table_name,
+    NULL::TEXT AS mapping
   FROM raw.column_header_mapping
   WHERE pheader LIKE '%missing_column_name_%'
     OR pheader LIKE '%none_%'
@@ -17,10 +18,11 @@ missing_names AS (
 declared_names AS (
   SELECT
     pheader,
-    ARRAY_AGG(original_header) AS original_header,
-    ARRAY_AGG(DISTINCT country_code) AS country_code,
-    ARRAY_AGG(programme_code) AS programme_code,
-    ARRAY_AGG(table_name) AS table_name
+    STRING_AGG(DISTINCT original_header,',') AS original_header,
+    STRING_AGG(DISTINCT country_code,',') AS country_code,
+    STRING_AGG(programme_code,',') AS programme_code,
+    STRING_AGG(table_name,',') AS table_name,
+    NULL::TEXT AS mapping
   FROM raw.column_header_mapping
   WHERE pheader NOT LIKE '%missing_column_name_%'
     AND pheader NOT LIKE '%none_%'
