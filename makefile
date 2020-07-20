@@ -8,29 +8,34 @@ load: tables
 tables: final
 	#. tables.sh
 
-final: prepare_final
-	#rm -rf data/input_final/* && mkdir -p data/input_final
-	#python lib/scaffold.py -s 'INPUT_FINAL_FOLDER'
-	#python lib/create_valid_headers.py
-	#python lib/cuts_csv_rows.py
-	#python lib/log_empty_columns.py
-	#python lib/create_sql_files.py
-	#python lib/cut_csv_columns.py
+final: evaluate_final
+	rm -rf data/input_final/* && mkdir -p data/input_final
+	python lib/scaffold.py -s 'INPUT_FINAL_FOLDER'
+	python lib/create_valid_headers.py
+	python lib/cut_csv_rows.py
+	python lib/log_empty_columns.py
+	python lib/create_sql_files.py
+	python lib/cut_csv_columns.py
+
+evaluate_final: prepare_final
+	#rm -rf data/input_eval/* && mkdir -p data/input_eval
+	#python lib/scaffold.py -s 'INPUT_EVAL_FOLDER'
+	#python lib/evaluate_header.py
 
 prepare_final: detect_header
-	rm -rf data/input/* && mkdir -p data/input
-	python lib/scaffold.py -s 'INPUT_FOLDER'
-	python lib/rename_and_copy.py
+	#rm -rf data/input/* && mkdir -p data/input
+	#python lib/scaffold.py -s 'INPUT_FOLDER'
+	#python lib/rename_and_copy.py
 
 detect_header: encode
-	rm -rf data/header_detected/* && mkdir -p data/header_detected
-	python lib/scaffold.py -s 'HEADER_DETECTED_FOLDER'
-	python lib/detect_header.py
+	#rm -rf data/header_detected/* && mkdir -p data/header_detected
+	#python lib/scaffold.py -s 'HEADER_DETECTED_FOLDER'
+	#python lib/detect_header.py
 
 encode: make_csv
-	rm -rf data/encoded/* && mkdir -p data/encoded
-	python lib/scaffold.py -s 'ENCODED_FOLDER'
-	python lib/encode.py
+	#rm -rf data/encoded/* && mkdir -p data/encoded
+	#python lib/scaffold.py -s 'ENCODED_FOLDER'
+	#python lib/encode.py
 
 make_csv: uncompress
 	#rm -rf data/converted/* && mkdir -p data/converted
@@ -46,7 +51,7 @@ download: database_setup
 	#python lib/download_source.py
 
 database_setup: download_source
-	make -f database_setup.mk
+	#make -f database_setup.mk
 
 download_source: clean
 	#python3 lib/download_gsheet.py -k config/client_secret.json -s 1ZXkIOly8p6bSCed42YBd9KyYCbDyrnkSp8_MfJ6JXtk -w OPERATIONS_LIST -o data/source/operations_list.csv

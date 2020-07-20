@@ -26,7 +26,7 @@ os.environ["PYTHONIOENCODING"] = "utf-8"
 logging.basicConfig(filename='logs/enrich_json.log', filemode='w+', format='%(asctime)s - %(message)s')
 
 confs = open_config('config/source.json')['DATA_SOURCE']
-source_folder = confs['INPUT_SAFE_FOLDER']
+source_folder = confs['INPUT_EVAL_FOLDER']
 target_folder = confs['INPUT_FINAL_FOLDER']
 
 def transform_postgresheader(header_list):

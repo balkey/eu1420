@@ -21,7 +21,7 @@ source_folder = confs['HEADER_DETECTED_FOLDER']
 target_folder = confs['INPUT_FOLDER']
 
 for dirpath, dirnames, filenames in os.walk(source_folder):
-	valid_filenames = [f for f in sorted(filenames) if f.split('.')[-1] in ['csv', 'json']] 
+	valid_filenames = [f for f in sorted(filenames) if f.split('.')[-1] in ['csv', 'json']]
 	for index_nr, filename in enumerate(valid_filenames, start=1):
 		file_type = dirpath.split('/')[-1]
 		program_name = dirpath.split('/')[-2]

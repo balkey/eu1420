@@ -6,6 +6,7 @@
     "ENCODED_FOLDER": "data/encoded/",
     "HEADER_DETECTED_FOLDER": "data/header_detected/",
     "INPUT_FOLDER": "data/input/",
+    "INPUT_EVAL_FOLDER": "data/input_eval/",
     "INPUT_SAFE_FOLDER": "data/input_safe/",
     "INPUT_FINAL_FOLDER": "data/input_final/",
     "ACCEPTED_COLUMNS": {

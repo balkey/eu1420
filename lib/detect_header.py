@@ -69,7 +69,7 @@ def get_header(dirpath, filename):
 		dicto = []
 		max_length = 0
 		for i, row in enumerate(reader):
-			row_length = len([i for i in row if str(i).strip() != '' and str(i) != 'None' and i is not None])
+			row_length = len(set([i for i in row if str(i).strip() != '' and str(i) != 'None' and i is not None]))
 			if row_length > max_length:
 				dicto.append(i)
 				max_length = row_length
