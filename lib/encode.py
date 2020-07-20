@@ -75,4 +75,6 @@ def encodefile(dirpath, filename, encoding):
 
 for dirpath, dirnames, filenames in os.walk(source_folder):
 	for filename in filenames:
-		encodefile(dirpath, filename, 'utf-8')
+		extension = filename.split('.')[-1]
+		if extension in ['csv']:
+			encodefile(dirpath, filename, 'utf-8')

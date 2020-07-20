@@ -7,6 +7,7 @@ The functions are called from converter_controler.py
 '''
 
 import xlrd
+import xlwt
 import ezodf
 from functools import wraps
 import xml.etree.ElementTree
@@ -40,7 +41,8 @@ def convert_unicode_to_utf8(value):
 	return value
 
 @handle_exceptions
-def convert_xsl(dirpath, filename):
+def unmerge_xsl(dirpath, filename):
+	#TODO: Follow here: https://github.com/zanran/unMergeExcelCell/blob/master/unMergeExcelCell.py
 	dirpath_source = dirpath
 	filepath_source  = os.path.join(dirpath, filename)
 
@@ -50,26 +52,60 @@ def convert_xsl(dirpath, filename):
 	workbook = xlrd.open_workbook(filepath_source)
 	all_worksheets = workbook.sheet_names()
 	worksheet_index = 0
+	
+	excel = xlwt.Workbook()
+	
 	for worksheet_name in all_worksheets:
 		worksheet_index +=1
 		all_data = []
-		worksheet = workbook.sheet_by_name(worksheet_name)
+		rd_sheet = workbook.sheet_by_name(worksheet_name)
+		wt_sheet = excel.add_sheet(rd_sheet.name)
+		writed_cells = []
+		
+		# overwrite for merged cells
+		for crange in rd_sheet.merged_cells:
+			rlo, rhi, clo, chi = crange
+			cell_value = rd_sheet.cell(rlo, clo).value
+			for rowx in range(rlo, rhi):
+				for colx in range(clo, chi):
+					wt_sheet.write(rowx, colx, cell_value)
+					writed_cells.append((rowx, colx))
 
-		prev_row = [None for i in range(worksheet.ncols)]
+		# write all un-merged cells
+		for r in range(0, rd_sheet.nrows):
+			for c in range(0, rd_sheet.ncols):
+				if (r, c) in writed_cells:
+					continue
+				cell_value = rd_sheet.cell(r, c).value
+				wt_sheet.write(r, c, cell_value)
+		
+	unmerge_excel_file = ''.join([filepath_target,'_umerged','.xls'])
+	excel.save(unmerge_excel_file)
+
+@handle_exceptions
+def convert_xsl(dirpath, filename):
+	dirpath_source = dirpath
+	filepath_source  = os.path.join(dirpath, filename)
+
+	dirpath_target = dirpath.replace(source_folder, target_folder)
+	filepath_target = os.path.join(dirpath_target, filename)
+	filepath_unmerged = ''.join([filepath_target,'_umerged','.xls'])
+	
+	workbook = xlrd.open_workbook(filepath_unmerged)
+	all_worksheets = workbook.sheet_names()
+	worksheet_index = 0
+
+	for worksheet_name in all_worksheets:
+		worksheet = workbook.sheet_by_name(worksheet_name)
+		worksheet_index +=1
+		all_data = []
+
 		for row_index in range(worksheet.nrows):
 			row= []
 			for col_index in range(worksheet.ncols):
-				#value = convert_unicode_to_utf8(str(worksheet.cell(rowx=row_index,colx=col_index).value))
 				value = str(worksheet.cell(rowx=row_index,colx=col_index).value)
-				if value is not None:
-					value =	value.replace('\n', ' ').replace('\r', ' ')
-				else:
-					if prev_row[col_index] is not None:
-						value = prev_row[col_index].replace('\n', ' ').replace('\r', ' ')
-					else:
-						value = ''
+				value =	value.replace('\n', ' ').replace('\r', ' ')
 				row.append(value)
-			prev_row = row
 			all_data.append(row)
 
 		with open(''.join([filepath_target,'_',str(worksheet_index),'_',str(worksheet_name),'.csv']),'w+') as f:

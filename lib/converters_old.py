@@ -7,7 +7,6 @@ The functions are called from converter_controler.py
 '''
 
 import xlrd
-import xlvt
 import ezodf
 from functools import wraps
 import xml.etree.ElementTree
@@ -21,7 +20,7 @@ logging.basicConfig(filename='logs/converted.log', filemode='w+', format='%(asct
 
 confs = open_config('config/source.json')['DATA_SOURCE']
 source_folder = confs['DOWNLOAD_FOLDER']
-target_folder = 'data/test/'
+target_folder = confs['CONVERTED_FOLDER']
 
 def handle_exceptions(fn):
 	@wraps(fn)
@@ -55,31 +54,20 @@ def convert_xsl(dirpath, filename):
 		worksheet_index +=1
 		all_data = []
 		worksheet = workbook.sheet_by_name(worksheet_name)
-		clean_sheet = 
 
 		prev_row = [None for i in range(worksheet.ncols)]
-		#TODO: Follow here: https://github.com/zanran/unMergeExcelCell/blob/master/unMergeExcelCell.py
-		for crange in worksheet.merged_cells:
-			print(crange)
-
-
 		for row_index in range(worksheet.nrows):
 			row= []
 			for col_index in range(worksheet.ncols):
 				#value = convert_unicode_to_utf8(str(worksheet.cell(rowx=row_index,colx=col_index).value))
-				value = worksheet.cell(rowx=row_index,colx=col_index).value
-				if (str(value).replace('\n','').replace('\r','')).strip() is not None:
-					#print("'"+str(value)+"'")
-					#print(len(value))
-					#print(type(value))
+				value = str(worksheet.cell(rowx=row_index,colx=col_index).value)
+				if value is not None:
 					value =	value.replace('\n', ' ').replace('\r', ' ')
 				else:
 					if prev_row[col_index] is not None:
 						value = prev_row[col_index].replace('\n', ' ').replace('\r', ' ')
-						print('KAKA2')
 					else:
 						value = ''
-						print('KAKA3')
 				row.append(value)
 			prev_row = row
 			all_data.append(row)
@@ -167,5 +155,3 @@ def move_csv(dirpath, filename):
 	dirpath_target = dirpath.replace(source_folder, target_folder)
 	filepath_target = os.path.join(dirpath_target, filename)
 	copyfile(filepath_source, filepath_target)
-
-convert_xsl('data/source/TC/2014TC16RFCB001/','test.xlsx')
