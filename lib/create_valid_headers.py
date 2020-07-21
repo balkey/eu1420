@@ -38,6 +38,10 @@ def transform_postgresheader(header_list):
 		no_accent = unidecode.unidecode(single_underscore)
 		alnum_underscore = ''.join(e for e in no_accent if re.match(r'^\w+$', e))
 		short_version = '%.62s' % alnum_underscore.lower()
+		if short_version.isdigit():
+			short_version = 'a_'+short_version
+		else:
+			pass
 		if short_version in pheader:
 			short_version = short_version+'_'+str(counter)
 			counter+=1
