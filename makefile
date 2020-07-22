@@ -3,10 +3,10 @@ SHELL=/bin/bash
 # The main controller scipt of the whole dataflow.
 
 load: tables
-	#. load.sh
+	. load.sh
 
 tables: final
-	#. tables.sh
+	. tables.sh
 
 final: evaluate_final
 	rm -rf data/input_final/* && mkdir -p data/input_final
