@@ -608,6 +608,150 @@ SELECT
   WHERE mena != 'Currency'
 ),
 
+"2014DE16M2OP001_1" AS (
+  SELECT
+    bezeichnung_des_vorhabens AS operation_name,
+    name_des_begunstigten AS beneficiary_name,
+    zusammenfassung_des_vorhabens AS operation_summary,
+    to_timestamp_from_excel(TO_NUMBER("datum_des_beginns_des_vorhabens", '99999D9')::INTEGER)::DATE AS operation_start_date,
+    to_timestamp_from_excel(TO_NUMBER("datum_des_endes_des_vorhabens", '99999D9')::INTEGER)::DATE AS operation_end_date,
+    'EUR' AS currency,
+    gesamtbetrag_der_forderfahigen_ausgaben_des_vorhabens_in_eur::DECIMAL AS operation_total_expenditure,
+    unions_kofinan_zierungssatz::DECIMAL AS eu_cofinancing_rate,
+    land AS country,
+    landkreis AS operation_location,
+    interventionsbereich AS code_of_category_intervention,
+    interventionsbereich_2 AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'DE' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    landkreis AS operation_nuts3_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    NULL AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    NULL::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    NULL AS operation_id,
+    NULL AS priority_axis,
+    '2014DE16M2OP001' AS cci,
+    '2014DE16M2OP001_1' AS data_source
+  FROM raw."2014DE16M2OP001_1"
+  WHERE bezeichnung_des_vorhabens != 'operation name'
+),
+
+"2014DE16RFOP002_1" AS (
+  SELECT
+    bezeichnung_des_vorhabens__operation_name AS operation_name,
+    name_des_begunstigten__beneficiary_name AS beneficiary_name,
+    zusammenfassung_des_vorhabens__operation_summary AS operation_summary,
+    to_timestamp_from_excel(TO_NUMBER("datum_des_beginns_des_vorhabens__operation_start_date", '99999D9')::INTEGER)::DATE AS operation_start_date,
+    to_timestamp_from_excel(TO_NUMBER("datum_des_endes_des_vorhabens__operation_end_date", '99999D9')::INTEGER)::DATE AS operation_end_date,
+    'EUR' AS currency,
+    gesamtbetrag_der_forderfahigen_ausgaben_des_vorhabens__total_e::DECIMAL AS operation_total_expenditure,
+    REPLACE(REPLACE(unionskofinanzierungssatz_pro_prioritatsachse__union_cofinanci,'*',''),'%','')::DECIMAL AS eu_cofinancing_rate,
+    land__country AS country,
+    durchfuhrungsort__location AS operation_location,
+    NULL AS code_of_category_intervention,
+    interventionsbereich__intervention_field AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'DE' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    NULL AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    NULL::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    NULL AS operation_id,
+    NULL AS priority_axis,
+    '2014DE16RFOP002' AS cci,
+    '2014DE16RFOP002_1' AS data_source
+  FROM raw."2014DE16RFOP002_1"
+  WHERE bezeichnung_des_vorhabens__operation_name IS NOT NULL
+),
+
+"2014DE16RFOP003_1" AS (
+  SELECT
+    projektbezeichnung AS operation_name,
+    name_des_begunstigten AS beneficiary_name,
+    projektbeschreibung AS operation_summary,
+    to_timestamp_from_excel(TO_NUMBER("datum_des_beginns_des_vorhabens", '99999D9')::INTEGER)::DATE AS operation_start_date,
+    to_timestamp_from_excel(TO_NUMBER("datum_des_endes_des_vorhabens", '99999D9')::INTEGER)::DATE AS operation_end_date,
+    'EUR' AS currency,
+    gesamtbetrag_der_forderfahigen_ausgaben_des_vorhabens::DECIMAL AS operation_total_expenditure,
+    REPLACE(unionskofinanzierungssatz_pro_prioritatsachse,'%', '')::DECIMAL AS eu_cofinancing_rate,
+    land AS country,
+    durchfuhrungsort AS operation_location,
+    interventionskategorie AS code_of_category_intervention,
+    NULL AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'DE' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    postleitzahl_durchfuhrungsort AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    NULL::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    NULL AS operation_id,
+    NULL AS priority_axis,
+    '2014DE16RFOP003' AS cci,
+    '2014DE16RFOP003_1' AS data_source
+  FROM raw."2014DE16RFOP003_1"
+  WHERE name_des_begunstigten != 'beneficiary name (only of legal entities; no natural persons shall be named)'
+),
+
+"2014DE16RFOP004_1" AS (
+  SELECT
+    bezeichnung_des_vorhabens__zusammenfassung_des_vorhabens AS operation_name,
+    name_des_begnstigten AS beneficiary_name,
+    bezeichnung_des_vorhabens__zusammenfassung_des_vorhabens AS operation_summary,
+    TO_DATE(beginns_des_vorhabens,'DD.MM.YYYY')::DATE AS operation_start_date,
+    TO_DATE(ende_des_vorhabens,'DD.MM.YYYY')::DATE AS operation_start_date,
+    'EUR' AS currency,
+    REPLACE(REPLACE(gesamtbetrag_der_frderfhigen_ausgaben_des_vorhabens,'.',''),',','.')::DECIMAL AS operation_total_expenditure,
+    REPLACE(unionskofinanzierungssatz_pro_priorittsachse,'%','')::DECIMAL AS eu_cofinancing_rate,
+    land AS country,
+    ort_des_vorhabens AS operation_location,
+    bezeichnung_der_interventionskategorie AS code_of_category_intervention,
+    missing_column_name_1 AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'DE' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    ort_des_vorhabens AS operation_city,
+    NULL AS operation_district,
+    NULL AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    NULL::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    NULL AS operation_id,
+    NULL AS priority_axis,
+    '2014DE16RFOP004' AS cci,
+    '2014DE16RFOP004_1' AS data_source
+  FROM raw."2014DE16RFOP004_1"
+  WHERE name_des_begnstigten != 'Beneficiary name'
+),
+
 vw AS (
   SELECT * FROM "2014AT16RFOP001"
   UNION ALL
@@ -642,6 +786,14 @@ vw AS (
   SELECT * FROM "2015BG16RFSM001_1"
   UNION ALL
   SELECT * FROM "2014CZ_1"
+  UNION ALL
+  SELECT * FROM "2014DE16M2OP001_1"
+  UNION ALL
+  SELECT * FROM "2014DE16RFOP002_1"
+  UNION ALL
+  SELECT * FROM "2014DE16RFOP003_1"
+  UNION ALL
+  SELECT * FROM "2014DE16RFOP004_1"
 )
 
 SELECT
