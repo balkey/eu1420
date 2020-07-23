@@ -8,7 +8,10 @@ WITH
     to_timestamp_from_excel(TO_NUMBER("", '99999D9')::INTEGER) AS operation_end_date,
     'EUR' AS currency,
     AS operation_total_expenditure,
-    AS eu_cofinancing_rate,
+    CASE
+      WHEN
+      ELSE
+    END AS eu_cofinancing_rate,
     AS country,
     AS operation_location,
     AS code_of_category_intervention,
@@ -29,6 +32,11 @@ WITH
     NULL AS beneficiary_id,
     NULL AS operation_id,
     NULL AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
     '' AS cci,
     '' AS data_source
   FROM raw.""
