@@ -18,14 +18,14 @@ final: evaluate_final
 	python lib/cut_csv_columns.py
 
 evaluate_final: prepare_final
-	#rm -rf data/input_eval/* && mkdir -p data/input_eval
-	#python lib/scaffold.py -s 'INPUT_EVAL_FOLDER'
-	#python lib/evaluate_header.py
+	rm -rf data/input_eval/* && mkdir -p data/input_eval
+	python lib/scaffold.py -s 'INPUT_EVAL_FOLDER'
+	python lib/evaluate_header.py
 
 prepare_final: detect_header
-	#rm -rf data/input/* && mkdir -p data/input
-	#python lib/scaffold.py -s 'INPUT_FOLDER'
-	#python lib/rename_and_copy.py
+	rm -rf data/input/* && mkdir -p data/input
+	python lib/scaffold.py -s 'INPUT_FOLDER'
+	python lib/rename_and_copy.py
 
 detect_header: encode
 	#rm -rf data/header_detected/* && mkdir -p data/header_detected

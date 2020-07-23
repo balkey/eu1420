@@ -12,6 +12,7 @@ import os
 from shutil import copyfile
 import logging
 from utils import *
+import re
 
 logging.basicConfig(filename='logs/rename_and_copy.log', filemode='w+', format='%(asctime)s - %(message)s')
 
@@ -20,8 +21,15 @@ confs = open_config('config/source.json')['DATA_SOURCE']
 source_folder = confs['HEADER_DETECTED_FOLDER']
 target_folder = confs['INPUT_FOLDER']
 
+def atoi(text):
+	return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+	return [atoi(c) for c in re.split(r'(\d+)', text)]
+
 for dirpath, dirnames, filenames in os.walk(source_folder):
-	valid_filenames = [f for f in sorted(filenames) if f.split('.')[-1] in ['csv', 'json']]
+	valid_filenames = [f for f in filenames if f.split('.')[-1] in ['csv', 'json']]
+	valid_filenames.sort(key=natural_keys)
 	for index_nr, filename in enumerate(valid_filenames, start=1):
 		file_type = dirpath.split('/')[-1]
 		program_name = dirpath.split('/')[-2]
