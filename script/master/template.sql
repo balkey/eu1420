@@ -4,8 +4,14 @@ WITH
     AS operation_name,
     AS beneficiary_name,
     AS operation_summary,
-    to_timestamp_from_excel(TO_NUMBER("", '99999D9')::INTEGER) AS operation_start_date,
-    to_timestamp_from_excel(TO_NUMBER("", '99999D9')::INTEGER) AS operation_end_date,
+    CASE
+      WHEN is_numeric("") THEN to_timestamp_from_excel(TO_NUMBER("", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("",'DD.MM.YYYY')::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("") THEN to_timestamp_from_excel(TO_NUMBER("", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("",'DD.MM.YYYY')::DATE
+    END AS operation_end_date,
     'EUR' AS currency,
     AS operation_total_expenditure,
     CASE
@@ -24,6 +30,10 @@ WITH
     NULL AS operation_nuts2_name,
     NULL AS operation_nuts3_code,
     NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
     NULL AS operation_city,
     NULL AS operation_district,
     NULL AS operation_zip_code,
