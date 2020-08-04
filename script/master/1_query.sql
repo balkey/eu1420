@@ -5388,6 +5388,51 @@ SELECT
   -- TODO: HERE ARE SUSPEVTED TO BE SUMMARY ROWS NEEDS A SOLUTION TO FILTER
 ),
 
+"2014RO_1" AS (
+  SELECT DISTINCT
+    _titlu_proiect AS operation_name,
+    nume_beneficiar AS beneficiary_name,
+    NULL::TEXT AS operation_summary,
+    NULL::DATE AS operation_start_date,
+    NULL::DATE AS operation_end_date,
+    'EUR' AS currency,
+    REPLACE(total_valoare_proiecte_ro,'None','0.0')::DECIMAL AS operation_total_expenditure,
+    REPLACE(fonduri_ue_ro,'None','0.0')::DECIMAL / REPLACE(total_valoare_proiecte_ro,'None','0.0')::DECIMAL*100.0 AS eu_cofinancing_rate,
+    NULL AS country,
+    NULL AS operation_location,
+    NULL AS code_of_category_intervention,
+    NULL AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'RO' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    NULL AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    REPLACE(fonduri_ue_ro,'None', '0.0')::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    nr_crt AS operation_id,
+    prioritate AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014RO' AS cci,
+    '2014RO_1' AS data_source
+  FROM raw."2014RO_1"
+  WHERE nr_crt != 'None'
+),
+
 vw AS (
   SELECT * FROM "2014AT16RFOP001"
   UNION ALL
@@ -5597,8 +5642,11 @@ vw AS (
   SELECT * FROM "2014PT16M2OP006_1"
   UNION ALL
   SELECT * FROM "2014PT16M2OP007_1"
+  UNION ALL
+  SELECT * FROM "2014RO_1"
+
 )
 
 SELECT
-  *
+  COUNT(*)
 FROM vw;

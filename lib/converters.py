@@ -163,10 +163,10 @@ def convert_ods(dirpath, filename):
 			for col_index in range(worksheet.ncols()):
 				#value = convert_unicode_to_utf8(str(worksheet[(row_index,col_index)].value))
 				value = str(worksheet[(row_index,col_index)].value)			
-				if value is not None:
+				if value is not None and value != 'None':
 					value = value.replace('\n', ' ').replace('\r', ' ')
 				else:
-					if prev_row[col_index] is not None:
+					if prev_row[col_index] is not None and prev_row[col_index] != 'None':
 						value = str(prev_row[col_index]).replace('\n', ' ').replace('\r', ' ')
 					else:
 						value = ''
