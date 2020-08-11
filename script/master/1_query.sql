@@ -7552,6 +7552,525 @@ SELECT
   LEFT JOIN "2014TC16RFCB007_1_summaries" AS s ON b.codigo = s.codigo
 ),
 
+"2014TC16RFCB008_1" AS (
+  SELECT
+    project_title AS operation_name,
+    name_of_lead_beneficiary_organisation AS beneficiary_name,
+    summary AS operation_summary,
+    CASE
+      WHEN is_numeric("start_date") THEN to_timestamp_from_excel(TO_NUMBER("start_date", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("start_date",'YYYY.MM.DD')::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("end_date") THEN to_timestamp_from_excel(TO_NUMBER("end_date", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("end_date",'YYYY.MM.DD')::DATE
+    END AS operation_end_date,
+    'EUR' AS currency,
+    total_allocated_expenditure_eur::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN cofinancing_rate_erdf::DECIMAL > 1.0 THEN cofinancing_rate_erdf::DECIMAL
+      ELSE cofinancing_rate_erdf::DECIMAL*100.0
+    END AS eu_cofinancing_rate,
+    NULL AS country,
+    "location" AS operation_location,
+    specific_objective_component AS code_of_category_intervention,
+    NULL AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
+    "location" AS operation_city,
+    NULL AS operation_district,
+    NULL AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    NULL::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    application_form_id AS operation_id,
+    investment_priority AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014TC16RFCB008' AS cci,
+    '2014TC16RFCB008_1' AS data_source
+  FROM raw."2014TC16RFCB008_1"
+  WHERE project_title IS NOT NULL
+),
+
+"2014TC16RFCB009_3" AS (
+  SELECT
+    projektname__nazev_projektu AS operation_name,
+    namen_der_begunstigten_institutionen_alle_projektpartner_mit_e AS beneficiary_name,
+    projektzusammenfassung__shrnuti_projektu AS operation_summary,
+    CASE
+      WHEN is_numeric("projektbeginn__zahajeni_projektu") THEN to_timestamp_from_excel(TO_NUMBER("projektbeginn__zahajeni_projektu", '99999D9')::INTEGER)::DATE
+      ELSE NULL::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("projektende__ukonceni_projektu") THEN to_timestamp_from_excel(TO_NUMBER("projektende__ukonceni_projektu", '99999D9')::INTEGER)::DATE
+      ELSE NULL::DATE
+    END AS operation_end_date,
+    'EUR' AS currency,
+    gesamtes_forderfahiges_budget__celkovy_zpusobily_rozpocet::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN efre__kofinanzierungsrate__dotacni_sazba::DECIMAL > 1.0 THEN efre__kofinanzierungsrate__dotacni_sazba::DECIMAL
+      ELSE efre__kofinanzierungsrate__dotacni_sazba::DECIMAL*100.0
+    END AS eu_cofinancing_rate,
+    land__zeme AS country,
+    ort_der_projektdurchfuhrung_nuts_regionen_des_programmgebiets_ AS operation_location,
+    REPLACE(interventionskategorie__oblast_zasahu,'.0','') code_of_category_intervention,
+    NULL AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
+    ort_der_projektdurchfuhrung_nuts_regionen_des_programmgebiets_ AS operation_city,
+    NULL AS operation_district,
+    NULL AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    efremittel__prostredky_erdf::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    projektnr__c_projektu AS operation_id,
+    prioritatsachse__prioritni_osa AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014TC16RFCB009' AS cci,
+    '2014TC16RFCB009_3' AS data_source
+  FROM raw."2014TC16RFCB009_3"
+  -- TODO: 2014TC16RFCB009_1
+  -- and 2014TC16RFCB009_2
+  -- seem to be earlier versions
+  -- of the data, so excluded.
+),
+
+"2014TC16RFCB014_1" AS (
+  SELECT
+    operation_name AS operation_name,
+    beneficiary_name AS beneficiary_name,
+    operation_summary AS operation_summary,
+    CASE
+      WHEN is_numeric("operation_start_date") THEN to_timestamp_from_excel(TO_NUMBER("operation_start_date", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("operation_start_date",'DD.MM.YYYY')::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("operation_end_date") THEN to_timestamp_from_excel(TO_NUMBER("operation_end_date", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("operation_end_date",'DD.MM.YYYY')::DATE
+    END AS operation_end_date,
+    'EUR' AS currency,
+    total_eligible_expenditure_allocated_to_the_beneficiary::DECIMAL AS operation_total_expenditure,
+    total_union_cofinancing_allocated_to_the_beneficiary::DECIMAL / GREATEST(total_eligible_expenditure_allocated_to_the_beneficiary::DECIMAL,1)*100.0 AS eu_cofinancing_rate,
+    country AS country,
+    location_indicator AS operation_location,
+    NULL AS code_of_category_intervention,
+    intervention_categories AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    location_indicator AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    NULL::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    NULL AS operation_id,
+    operation_priority_axis AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014TC16RFCB014' AS cci,
+    '2014TC16RFCB014_1' AS data_source
+  FROM raw."2014TC16RFCB014_1"
+),
+
+"2014TC16RFCB019_1" AS (
+  SELECT
+    projekttitel AS operation_name,
+    leadpartner AS beneficiary_name,
+    projektbeschreibung_de AS operation_summary,
+    CASE
+      WHEN is_numeric("projektbeginn") THEN to_timestamp_from_excel(TO_NUMBER("projektbeginn", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("projektbeginn",'YYYY-MM-DD')::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("projektende") THEN to_timestamp_from_excel(TO_NUMBER("projektende", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("projektende",'YYYY-MM-DD')::DATE
+    END AS operation_end_date,
+    'EUR' AS currency,
+    ausgaben_eur::DECIMAL AS operation_total_expenditure,
+    efre_eur::DECIMAL / ausgaben_eur::DECIMAL*100.0 AS eu_cofinancing_rate,
+    land AS country,
+    plz AS operation_location,
+    NULL AS code_of_category_intervention,
+    interventionskategorie AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    plz AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    efre_eur::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    REPLACE(projektnr_int,'.0','') AS operation_id,
+    prioritatsachse AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014TC16RFCB019' AS cci,
+    '2014TC16RFCB019_1' AS data_source
+  FROM raw."2014TC16RFCB019_1"
+),
+
+"2014TC16RFCB023_1" AS (
+  SELECT
+    projektname AS operation_name,
+    projektpartner AS beneficiary_name,
+    zusammenfassung_d AS operation_summary,
+    CASE
+      WHEN is_numeric("laufzeit_von") THEN to_timestamp_from_excel(TO_NUMBER("laufzeit_von", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("laufzeit_von",'DD.MM.YYYY')::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("laufzeit_bis") THEN to_timestamp_from_excel(TO_NUMBER("laufzeit_bis", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("laufzeit_bis",'DD.MM.YYYY')::DATE
+    END AS operation_end_date,
+    'EUR' AS currency,
+    forderfahige_kosten::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN efre_prioritatsachse::DECIMAL > 1.0 THEN efre_prioritatsachse::DECIMAL
+      ELSE efre_prioritatsachse::DECIMAL*100.0
+    END AS eu_cofinancing_rate,
+    land AS country,
+    plz AS operation_location,
+    interventionskategorie AS code_of_category_intervention,
+    NULL AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
+    ort AS operation_city,
+    NULL AS operation_district,
+    plz AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    NULL::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    projektnr AS operation_id,
+    prioritatsachse AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014TC16RFCB023' AS cci,
+    '2014TC16RFCB023_1' AS data_source
+  FROM raw."2014TC16RFCB023_1"
+  WHERE projektnr != 'Projectnr.'
+),
+
+"2014TC16RFCB034_1" AS (
+  SELECT
+    nom_de_loperation AS operation_name,
+    nom_du_partenaire AS beneficiary_name,
+    NULL AS operation_summary,
+    NULL::DATE AS operation_start_date,
+    NULL::DATE AS operation_end_date,
+    'EUR' AS currency,
+    cout_total::DECIMAL AS operation_total_expenditure,
+    feder::DECIMAL / GREATEST(cout_total::DECIMAL,1.0)*100.0 AS eu_cofinancing_rate,
+    pays AS country,
+    ville AS operation_location,
+    NULL AS code_of_category_intervention,
+    NULL AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    region AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    nuts3 AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    ville AS operation_lau2_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    REPLACE(code_postal,'.0','') AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    feder::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    NULL AS operation_id,
+    REPLACE(axe,'.0','') AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014TC16RFCB034' AS cci,
+    '2014TC16RFCB034_1' AS data_source
+  FROM raw."2014TC16RFCB034_1"
+),
+
+"2014TC16RFCB038_1" AS (
+  SELECT
+    acronym_of_the_operation AS operation_name,
+    name_of_the_beneficiary AS beneficiary_name,
+    NULL AS operation_summary,
+    NULL::DATE AS operation_start_date,
+    NULL::DATE AS operation_end_date,
+    'EUR' AS currency,
+    total_eligible_costs_per_beneficiary::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN percentage_of_erdf_requested_by_the_beneficiary::DECIMAL > 1.0 THEN percentage_of_erdf_requested_by_the_beneficiary::DECIMAL
+      ELSE percentage_of_erdf_requested_by_the_beneficiary::DECIMAL*100.0
+    END AS eu_cofinancing_rate,
+    ms AS country,
+    nuts_iii AS operation_location,
+    NULL AS code_of_category_intervention,
+    NULL AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    nuts_iii AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    NULL AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    erdf_committed_per_beneficiary::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    project_registration_number AS operation_id,
+    NULL AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014TC16RFCB038' AS cci,
+    '2014TC16RFCB038_1' AS data_source
+  FROM raw."2014TC16RFCB038_1"
+),
+
+"2014TC16RFCB039_1" AS (
+  SELECT
+    nom_du_projet AS operation_name,
+    porteur_de_projet AS beneficiary_name,
+    description_du_projet AS operation_summary,
+    CASE
+      WHEN is_numeric("debut_du_projet") THEN to_timestamp_from_excel(TO_NUMBER("debut_du_projet", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("debut_du_projet",'DD.MM.YYYY')::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("fin_du_projet_projektende") THEN to_timestamp_from_excel(TO_NUMBER("fin_du_projet_projektende", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("fin_du_projet_projektende",'DD.MM.YYYY')::DATE
+    END AS operation_end_date,
+    'EUR' AS currency,
+    cout_eligible::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN _feder_axe_prioritaire::DECIMAL > 1.0 THEN _feder_axe_prioritaire::DECIMAL
+      ELSE _feder_axe_prioritaire::DECIMAL*100.0
+    END AS eu_cofinancing_rate,
+    situation_gegographique_du_porteur_de_projet AS country,
+    lieu AS operation_location,
+    REPLACE(domaine_dintervention,'.0','') AS code_of_category_intervention,
+    NULL AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
+    lieu AS operation_city,
+    NULL AS operation_district,
+    code_postal AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    feder::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    NULL AS operation_id,
+    ndeg_projet AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014TC16RFCB039' AS cci,
+    '2014TC16RFCB039_1' AS data_source
+  FROM raw."2014TC16RFCB039_1"
+  WHERE ndeg_projet NOT IN  ('Projektnummer', 'Axe prioritaire A / Prioritätsachse A Axe prioritaire A / Prioritätsachse A ')
+-- TODO: Tabs on this source seem to be
+-- versioning of updates according to dates,
+-- while this sheet contains all data.
+-- Therefore 2014TC16RFCB039_1 to 2014TC16RFCB039_15 
+-- are excluded.
+),
+
+"2014TC16RFCB041_1" AS (
+  SELECT
+    nom_du_projet AS operation_name,
+    chef_de_file_fr AS beneficiary_name,
+    description AS operation_summary,
+    CASE
+      WHEN is_numeric("date_de_debut") THEN to_timestamp_from_excel(TO_NUMBER("date_de_debut", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("date_de_debut",'DD.MM.YYYY')::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("date_de_fin") THEN to_timestamp_from_excel(TO_NUMBER("date_de_fin", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("date_de_fin",'DD.MM.YYYY')::DATE
+    END AS operation_end_date,
+    'EUR' AS currency,
+    total_general_eur::DECIMAL AS operation_total_expenditure,
+    feder_eur::DECIMAL / total_general_eur::DECIMAL*100.0 AS eu_cofinancing_rate,
+    NULL AS country,
+    localisation_fr||'//'||localisation_ch AS operation_location,
+    NULL AS code_of_category_intervention,
+    categorie_dintervention AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    localisation_fr||'//'||localisation_ch AS operation_lau2_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    NULL AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    NULL::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    NULL AS operation_id,
+    NULL AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014TC16RFCB041' AS cci,
+    '2014TC16RFCB041_1' AS data_source
+  FROM raw."2014TC16RFCB041_1"
+),
+
+"2014TC16RFCB045_1" AS (
+  SELECT
+    titre_du_projet__projektbezeichnung AS operation_name,
+    beneficiaire_chef_de_file__federfuhrender_begunstigter AS beneficiary_name,
+    description_courte_ AS operation_summary,
+    CASE
+      WHEN is_numeric("date_de_debut__datum_des_projektbeginns") THEN to_timestamp_from_excel(TO_NUMBER("date_de_debut__datum_des_projektbeginns", '99999D9')::INTEGER)::DATE
+      ELSE NULL::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("date_de_fin__datum_des_projektendes") THEN to_timestamp_from_excel(TO_NUMBER("date_de_fin__datum_des_projektendes", '99999D9')::INTEGER)::DATE
+      ELSE NULL::DATE
+    END AS operation_end_date,
+    'EUR' AS currency,
+    montant_total_eligible_du_projet__forderfahiger_gesamtbetrag_d::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN _feder_axe_prioritaire___efre_prioritatsachse::DECIMAL > 1.0 THEN _feder_axe_prioritaire___efre_prioritatsachse::DECIMAL
+      ELSE _feder_axe_prioritaire___efre_prioritatsachse::DECIMAL*100.0
+    END AS eu_cofinancing_rate,
+    pays__land AS country,
+    lieu__ort operation_location,
+    REPLACE(domaine_dintervention__interventionsbereich,'.0','') AS code_of_category_intervention,
+    NULL AS name_of_category_intervention,
+    NULL::DATE AS date_of_last_update,
+    'TC' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    lieu__ort AS operation_lau2_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    REPLACE(code_postal__postleitzahl,'.0','') AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    feder__efre::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    ndeg_de_projet__projektnummer AS operation_id,
+    priorite__prioritatsachse AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    activite_economique__wirtschaftszweig AS economic_dimension,
+    '2014TC16RFCB045' AS cci,
+    '2014TC16RFCB045_1' AS data_source
+  FROM raw."2014TC16RFCB045_1"
+  WHERE titre_du_projet__projektbezeichnung IS NOT NULL
+),
+
 vw AS (
   SELECT * FROM "2014AT16RFOP001"
   UNION ALL
@@ -7847,7 +8366,26 @@ vw AS (
   SELECT * FROM "2014TC16RFCB006_1"
   UNION ALL
   SELECT * FROM "2014TC16RFCB007_1"
-
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB008_1"
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB009_3"
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB014_1"
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB019_1"
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB023_1"
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB034_1"
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB038_1"
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB039_1"
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB041_1"
+  UNION ALL
+  SELECT * FROM "2014TC16RFCB045_1"
 )
 
 SELECT
