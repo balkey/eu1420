@@ -4911,12 +4911,58 @@ SELECT
   FROM raw."2014PL16RFOP003_1"
 ),
 
--- "2014PT16CFOP001_1" AS (
---  SELECT
---    *
---  FROM 2014PT16CFOP001_1
---TODO: WHY IS THIS MISSING?
---),
+"2014PT16CFOP001_1" AS (
+  SELECT
+    nome_da_operacao__operation_name AS operation_name,
+    nome_do_beneficiario__beneficiary_name AS beneficiary_name,
+    resumo_da_operacao__operation_summary AS operation_summary,
+    CASE
+      WHEN is_numeric("data_de_aprovacao__approval_date") THEN to_timestamp_from_excel(TO_NUMBER("data_de_aprovacao__approval_date", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("data_de_aprovacao__approval_date",'DD-MM-YYYY')::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN is_numeric("data_de_fim_da_operacao__end_of_operation_date") THEN to_timestamp_from_excel(TO_NUMBER("data_de_fim_da_operacao__end_of_operation_date", '99999D9')::INTEGER)::DATE
+      ELSE TO_DATE("data_de_fim_da_operacao__end_of_operation_date",'DD-MM-YYYY')::DATE
+    END AS operation_end_date,
+    'EUR' AS currency,
+    REPLACE(REPLACE(despesas_elegiveis_totais__total_eligible_costs,'.',''),',','.')::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN REPLACE(taxa_de_cofinanciamento_do_eixo_pela_eu__axis_eu_cofinancing_r,',','')::DECIMAL > 1.0 THEN REPLACE(taxa_de_cofinanciamento_do_eixo_pela_eu__axis_eu_cofinancing_r,',','')::DECIMAL
+      ELSE REPLACE(taxa_de_cofinanciamento_do_eixo_pela_eu__axis_eu_cofinancing_r,',','')::DECIMAL*100.0
+    END AS eu_cofinancing_rate,
+    pais__country AS country,
+    NULL AS operation_location,
+    NULL AS code_of_category_intervention,
+    categoria_de_intervencao__intervention_area AS name_of_category_intervention,
+    TO_DATE(data_de_exportacao__export_date,'DD-MM-YYYY H:M:SS') AS date_of_last_update,
+    '' AS operation_nuts0,
+    NULL AS operation_nuts1_code,
+    NULL AS operation_nuts1_name,
+    NULL AS operation_nuts2_code,
+    NULL AS operation_nuts2_name,
+    NULL AS operation_nuts3_code,
+    NULL AS operation_nuts3_name,
+    NULL AS operation_lau1_code,
+    NULL AS operation_lau1_name,
+    NULL AS operation_lau2_code,
+    NULL AS operation_lau2_name,
+    NULL AS operation_city,
+    NULL AS operation_district,
+    NULL AS operation_zip_code,
+    NULL::DECIMAL AS member_state_value,
+    NULL::DECIMAL AS eu_subsidy_value,
+    NULL AS beneficiary_id,
+    NULL AS operation_id,
+    eixo_prioritario__priority_axis AS priority_axis,
+    NULL AS form_of_finance,
+    NULL AS territorial_dimension,
+    NULL AS territorial_delivery_mechanism,
+    NULL AS esf_secondary_theme,
+    NULL AS economic_dimension,
+    '2014PT16CFOP001' AS cci,
+    '2014PT16CFOP001_1' AS data_source
+  FROM raw."2014PT16CFOP001_1"
+),
 
 "2014PT16M2OP001_3" AS (
   SELECT
@@ -9030,9 +9076,8 @@ vw AS (
   SELECT * FROM "2014PL16RFOP002_1"
   UNION ALL
   SELECT * FROM "2014PL16RFOP003_1"
-  -- UNION ALL
-  -- SELECT * FROM "2014PT16CFOP001"
-  -- TODO: WHY IS THIS MISSING?
+  UNION ALL
+  SELECT * FROM "2014PT16CFOP001_1"
   UNION ALL
   SELECT * FROM "2014PT16M2OP001_3"
   UNION ALL

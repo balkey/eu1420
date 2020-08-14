@@ -1,6 +1,6 @@
 SHELL=/bin/bash
 
-# The main controller scipt of the whole dataflow.
+# The main controller script of the whole dataflow.
 
 load: tables
 	. load.sh
