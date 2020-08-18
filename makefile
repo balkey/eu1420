@@ -1,6 +1,20 @@
 SHELL=/bin/bash
 
+# ---------------README---------------
 # The main controller script of the whole dataflow.
+
+# Usage:
+
+# 1. Force download of original source files
+# (run without falling back to a previously generated data/source folder):
+#	$ cd root_folder
+# 	$ make FORCE_DOWNLOAD=1
+
+# 2. Fall back to previously generated source files
+# (make sure you have copied the data/source folder to the root folder):
+#	$ cd root_folder
+# 	$ make
+# ---------------README---------------
 
 load: tables
 	. load.sh
@@ -44,29 +58,49 @@ make_csv: uncompress
 	python lib/remove_empty_files.py
 
 uncompress: download
-	#python lib/uncompress.py
+ifeq ($(FORCE_DOWNLOAD),1)
+	@echo 'Uncompressing source files'
+	python lib/uncompress.py
+else
+	@echo 'Falling back to previously uncompressed source files.'
+endif
 
 download: database_setup
-	#python lib/scaffold.py -s 'DOWNLOAD_FOLDER'
-	#python lib/download_source.py
+ifeq ($(FORCE_DOWNLOAD),1)
+	@echo 'Downloading source files'
+	python lib/scaffold.py -s 'DOWNLOAD_FOLDER'
+	python lib/download_source.py
+else
+	@echo 'Falling back to previous source files.'
+endif
 
 database_setup: download_source
-	#make -f database_setup.mk
+	make -f database_setup.mk
 
 download_source: clean
-	#python3 lib/download_gsheet.py -k config/client_secret.json -s 1ZXkIOly8p6bSCed42YBd9KyYCbDyrnkSp8_MfJ6JXtk -w OPERATIONS_LIST -o data/source/operations_list.csv
+ifeq ($(FORCE_DOWNLOAD),1)
+	@echo 'Downloading new source master.'
+	python3 lib/download_gsheet.py -k config/client_secret.json -s 1ZXkIOly8p6bSCed42YBd9KyYCbDyrnkSp8_MfJ6JXtk -w OPERATIONS_LIST -o data/source/operations_list.csv
+else
+	@echo 'Falling back to previous source master.'
+endif
 
 clean: start
-	#mkdir -p tmp
-	#mv data/source/HU tmp/
-	#mv data/source/GR tmp/
+ifeq ($(FORCE_DOWNLOAD),1)
+	@echo 'Data folder regenerated.'
+	mkdir -p tmp
+	mv data/source/HU tmp/
+	mv data/source/GR tmp/
 	
-	# Make sure that here ^
-	# you include all the manually collected files.
+	@# Make sure that here ^
+	@# you include all the manually collected files.
 	
-	#rm -rf data/* && mkdir data/source
-	#mv tmp/* data/source/ && rm -rf tmp
+	rm -rf data/* && mkdir data/source
+	mv tmp/* data/source/ && rm -rf tmp
+else
+	@echo 'Falling back on existing data folder.'
+endif
 
 start:
-	# Make sure you copy all the manually collected files to data/source
-	# Make sure you keep the data/source/[COUNTRY_CODE]/[PROGAME_CODE]/file.xlsx convention!
+	@# Make sure you copy all the manually collected files to data/source
+	@# Make sure you keep the data/source/[COUNTRY_CODE]/[PROGAME_CODE]/file.xlsx convention!
