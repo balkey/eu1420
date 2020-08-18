@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS real.operations_ski;
+DROP TABLE IF EXISTS real.operations_sk;
 
 CREATE TABLE real.operations_sk AS
 WITH

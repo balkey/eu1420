@@ -1,0 +1,1 @@
+\copy (SELECT * FROM real.operations_eu) TO 'data/exports/eu_operations_2014_2020.csv' DELIMITER ',' CSV HEADER;

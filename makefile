@@ -16,6 +16,53 @@ SHELL=/bin/bash
 # 	$ make
 # ---------------README---------------
 
+ENVIRONMENT=config/env_prod.env
+
+include $(ENVIRONMENT)
+export
+
+DB_ACCESS=PGOPTIONS="-c statement_timeout=0" psql -h $(DB_HOST) -U $(DB_USER) -d $(DB_DATABASE) -v ON_ERROR_STOP=1
+
+define \n
+
+
+endef
+
+# Make sure to include new countries here, if needed!
+COUNTRY_LIST=AT \
+	BE \
+	BG \
+	CZ \
+	DE \
+	DK \
+	ES \
+	FR \
+	GR \
+	HR \
+	HU \
+	IE \
+	IT \
+	LU \
+	LV \
+	NL \
+	PL \
+	PT \
+	RO \
+	SI \
+	SK \
+	UK \
+	TC
+
+export_results: construct_master_table
+	mkdir -p data/exports
+	$(DB_ACCESS) < script/real.operations/eu/2_dump.sql
+
+construct_master_table: transform_countries
+	$(DB_ACCESS) < script/real.operations/eu/1_query.sql
+	
+transform_countries: load
+	$(foreach country, $(COUNTRY_LIST), $(DB_ACCESS) < script/real.operations/$(country)/1_query.sql $(\n))
+	
 load: tables
 	. load.sh
 
@@ -75,7 +122,7 @@ else
 endif
 
 database_setup: download_source
-	make -f database_setup.mk
+	make -f database_setup.mk ENVIRONMENT=$(ENVIRONMENT)
 
 download_source: clean
 ifeq ($(FORCE_DOWNLOAD),1)

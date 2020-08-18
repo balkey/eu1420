@@ -5,15 +5,6 @@
 # sheet that contains the endpoints and supporting
 # information about the endpoints / files themselves.
 
-TODAY:=$(shell date +"%Y_%m_%d")
-TS_NOW:=$(shell date +"%Y_%m_%d_%H_%M_%S")
-LOG_DATE_FORMAT='%Y-%m-%d %H:%M:%S'
-
-MD5_HASH:=$(TS_NOW) | md5sum | cut -c 1-32
-SESSION_ID:=$(shell echo $(MD5_HASH))
-
-ENVIRONMENT=config/env_prod.env
-
 include $(ENVIRONMENT)
 export
 
