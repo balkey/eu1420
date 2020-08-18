@@ -4009,7 +4009,7 @@ SELECT
     TO_DATE("einddatum",'D-MM-YY') AS operation_end_date,
     'EUR' AS currency,
     REPLACE(totale_kosten,'.','')::DECIMAL AS operation_total_expenditure,
-    REPLACE(medefinancieringspercentage,',','.')::DECIMAL*100.0 AS eu_cofinancing_rate,
+    REPLACE(REPLACE(medefinancieringspercentage,',','.'),'%','')::DECIMAL*100.0 AS eu_cofinancing_rate,
     land AS country,
     plaats AS operation_location,
     categorie_steunverlening_code AS code_of_category_intervention,
@@ -6582,10 +6582,19 @@ SELECT
     name_of_project AS operation_name,
     recipient_of_funds AS beneficiary_name,
     summary_of_project_max_100_words AS operation_summary,
-    start_date::DATE AS operation_start_date,
-    end_date::DATE AS operation_end_date,
+    CASE
+      WHEN LEFT(start_date,10) ~ '[0-9]{4}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}' THEN start_date::DATE
+      ELSE NULL::DATE
+    END AS operation_start_date,
+    CASE
+      WHEN LEFT(end_date,10) ~ '[0-9]{4}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}' THEN end_date::DATE
+      ELSE NULL::DATE
+    END AS operation_end_date,
     'GBP' AS currency,
-    total_project_costs_psm::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN is_numeric(REPLACE(REPLACE(total_project_costs_psm,',',''),' ','')) THEN REPLACE(REPLACE(total_project_costs_psm,',',''),' ','')::DECIMAL
+      ELSE NULL::DECIMAL
+    END AS operation_total_expenditure,
     CASE
       WHEN _of_project_funded_by_eu::DECIMAL > 1.0 THEN _of_project_funded_by_eu::DECIMAL
       ELSE _of_project_funded_by_eu::DECIMAL*100.0
@@ -6610,7 +6619,10 @@ SELECT
     NULL AS operation_district,
     location_postcode AS operation_zip_code,
     NULL::DECIMAL AS member_state_value,
-    erdfesf_investment_psm::DECIMAL AS eu_subsidy_value,
+    CASE
+      WHEN is_numeric(REPLACE(REPLACE(erdfesf_investment_psm,',',''),' ','')) THEN REPLACE(REPLACE(erdfesf_investment_psm,',',''),' ','')::DECIMAL
+      ELSE NULL::DECIMAL
+    END AS eu_subsidy_value,
     NULL AS beneficiary_id,
     NULL AS operation_id,
     priority_axis AS priority_axis,
@@ -9220,6 +9232,8 @@ vw AS (
   SELECT * FROM "2014TC16RFIR001_1"
   UNION ALL
   SELECT * FROM "2014TC16RFPC001_1"
+  UNION ALL
+  SELECT * FROM "2014TC16RFTN002_1"
   UNION ALL
   SELECT * FROM "2014TC16RFTN003_1"
   UNION ALL
