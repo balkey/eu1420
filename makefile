@@ -58,6 +58,7 @@ export_results: construct_master_table
 	$(DB_ACCESS) < script/real.operations/eu/2_dump.sql
 
 construct_master_table: transform_countries
+	$(DB_ACCESS) < script/exchange_rates/1_table.sql
 	$(DB_ACCESS) < script/real.operations/eu/1_query.sql
 	
 transform_countries: load
