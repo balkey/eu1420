@@ -339,7 +339,10 @@ SELECT
     to_timestamp_from_excel(TO_NUMBER("operation_start_date", '99999D9')::INTEGER)::DATE AS operation_start_date,
     to_timestamp_from_excel(TO_NUMBER("operation_end_date", '99999D9')::INTEGER)::DATE AS operation_end_date,
     'EUR' AS currency,
-    REPLACE(REPLACE(REPLACE(REPLACE(total_eligible_expenditure,'?',''),' ',''),'.',''),',','.')::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN total_eligible_expenditure LIKE '%?%' THEN REPLACE(REPLACE(REPLACE(REPLACE(total_eligible_expenditure,'?',''),' ',''),'.',''),',','.')::DECIMAL
+      ELSE total_eligible_expenditure::DECIMAL
+    END AS operation_total_expenditure,
     CASE
       WHEN REPLACE(union_cofinancing_rate,'%','')::DECIMAL > 1.00 THEN REPLACE(union_cofinancing_rate,'%','')::DECIMAL
       ELSE REPLACE(union_cofinancing_rate,'%','')::DECIMAL*100.0
@@ -364,7 +367,10 @@ SELECT
     NULL AS operation_district,
     postcode AS operation_zip_code,
     NULL::DECIMAL AS member_state_value,
-    REPLACE(REPLACE(REPLACE(REPLACE(efrosteun,'?',''),' ',''),'.',''),',','.')::DECIMAL AS eu_subsidy_value,
+    CASE
+      WHEN efrosteun LIKE '%?%' THEN REPLACE(REPLACE(REPLACE(REPLACE(efrosteun,'?',''),' ',''),'.',''),',','.')::DECIMAL
+      ELSE efrosteun::DECIMAL
+    END AS eu_subsidy_value,
     NULL AS beneficiary_id,
     REPLACE(projectnumber, '.0', '') AS operation_id,
     NULL AS priority_axis,

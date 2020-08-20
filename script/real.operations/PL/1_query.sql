@@ -26,7 +26,7 @@ WITH
     NULL AS code_of_category_intervention,
     nazwa_kategorii_interwencji__name_of_intervention_category AS name_of_category_intervention,
     NULL::DATE AS date_of_last_update,
-    '' AS operation_nuts0,
+    'PL' AS operation_nuts0,
     NULL AS operation_nuts1_code,
     NULL AS operation_nuts1_name,
     NULL AS operation_nuts2_code,

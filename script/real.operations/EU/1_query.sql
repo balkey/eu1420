@@ -2,7 +2,7 @@ DROP TABLE IF EXISTS real.operations_eu;
 
 CREATE TABLE real.operations_eu AS
 WITH
-vw AS (
+base AS (
   SELECT * FROM real.operations_at
   UNION ALL
   SELECT * FROM real.operations_be
@@ -48,8 +48,19 @@ vw AS (
   SELECT * FROM real.operations_uk
   UNION ALL
   SELECT * FROM real.operations_tc
+),
+
+currency_converted AS (
+  SELECT
+    b.*,
+    rate,
+    ROUND((operation_total_expenditure / COALESCE(rate,1.0)),2) AS operation_total_expenditure_eur,
+    ROUND((eu_subsidy_value / COALESCE(rate,1.0)),2) AS eu_subsdidy_value_eur   
+  FROM base AS b
+  LEFT JOIN real.eur_exchange_rates AS e ON b.currency = e.currency
+
 )
 
 SELECT
   *
-FROM vw;
+FROM currency_converted;

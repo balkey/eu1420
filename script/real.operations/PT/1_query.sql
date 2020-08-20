@@ -26,7 +26,7 @@ WITH
     NULL AS code_of_category_intervention,
     categoria_de_intervencao__intervention_area AS name_of_category_intervention,
     TO_DATE(data_de_exportacao__export_date,'DD-MM-YYYY H:M:SS') AS date_of_last_update,
-    '' AS operation_nuts0,
+    'PT' AS operation_nuts0,
     NULL AS operation_nuts1_code,
     NULL AS operation_nuts1_name,
     NULL AS operation_nuts2_code,
