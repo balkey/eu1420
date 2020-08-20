@@ -16,10 +16,8 @@ WITH
       ELSE TO_DATE("zakljucni_datum_provedbe_aktivnosti",'DD.MM.YYYY')::DATE
     END AS operation_end_date,
     'HRK' AS currency,
-    -- TODO: DOUBLE CHECK THAT THIS IS CROATIAN KUNA INDEED
     ukupno_prihvatljivi_troskovi::DECIMAL AS operation_total_expenditure,
-    bespovratna_sredstva::DECIMAL / GREATEST((ukupno_prihvatljivi_troskovi::DECIMAL+bespovratna_sredstva::DECIMAL),1.0)*100.0AS eu_cofinancing_rate,
-    -- TODO: DOUBLE CHECK IF ^ THIS IS CALCULATED CORRECTLY, AS THE FIELD NAMES ARE AMBIGUOUS! 
+    bespovratna_sredstva::DECIMAL / GREATEST((ukupno_prihvatljivi_troskovi::DECIMAL),1.0)*100.0 AS eu_cofinancing_rate, 
     NULL::TEXT AS country,
     zupanija AS operation_location,
     NULL AS code_of_category_intervention,
