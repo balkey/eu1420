@@ -30,7 +30,7 @@ WITH
     NULL AS operation_lau1_code,
     NULL AS operation_lau1_name,
     NULL AS operation_lau2_code,
-    NULL AS operation_lau2_name,
+    regionalcode_des_vorhabens_location_indicator AS operation_lau2_name,
     NULL AS operation_city,
     NULL AS operation_district,
     NULL AS operation_zip_code,

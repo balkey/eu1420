@@ -63,4 +63,6 @@ currency_converted AS (
 
 SELECT
   *
-FROM currency_converted;
+FROM currency_converted
+WHERE (operation_name IS NOT NULL
+  OR beneficiary_name IS NOT NULL);
