@@ -9,8 +9,7 @@ WITH
     summary_of_the_operation AS operation_summary,
     TO_DATE(REPLACE(operation_start_date,' г.',''),'DD.MM.YYYY')::DATE AS operation_start_date,
     TO_DATE(REPLACE(date_of_completion_of_the_operation,' г.',''),'DD.MM.YYYY')::DATE AS operation_end_date,
-    'EUR' AS currency,
-    -- TODO: THIS NEEDS TO BE CONFIRMED IF EUR OR BGN
+    'BGN' AS currency,
     total_eligible_costs_granted_for_the_operation::DECIMAL AS operation_total_expenditure,
     CASE
       WHEN _of_ec_cofinancing::DECIMAL > 1.0 THEN _of_ec_cofinancing::DECIMAL
@@ -57,8 +56,7 @@ WITH
     summary_of_the_operation AS operation_summary,
     TO_DATE(REPLACE(operation_start_date,' г.',''),'DD.MM.YYYY')::DATE AS operation_start_date,
     TO_DATE(REPLACE(date_of_completion_of_the_operation,' г.',''),'DD.MM.YYYY')::DATE AS operation_end_date,
-    'EUR' AS currency,
-    -- TODO: THIS NEEDS TO BE CONFIRMED IF EUR OR BGN
+    'BGN' AS currency,
     total_eligible_costs_granted_for_the_operation::DECIMAL AS operation_total_expenditure,
     CASE
       WHEN _of_ec_cofinancing::DECIMAL > 1.0 THEN _of_ec_cofinancing::DECIMAL
@@ -105,8 +103,7 @@ WITH
     summary_of_the_operation AS operation_summary,
     TO_DATE(REPLACE(operation_start_date,' г.',''),'DD.MM.YYYY')::DATE AS operation_start_date,
     TO_DATE(REPLACE(date_of_completion_of_the_operation,' г.',''),'DD.MM.YYYY')::DATE AS operation_end_date,
-    'EUR' AS currency,
-    -- TODO: THIS NEEDS TO BE CONFIRMED IF EUR OR BGN
+    'BGN' AS currency,
     total_eligible_costs_granted_for_the_operation::DECIMAL AS operation_total_expenditure,
     CASE
       WHEN _of_ec_cofinancing::DECIMAL > 1.0 THEN _of_ec_cofinancing::DECIMAL
@@ -153,8 +150,7 @@ WITH
     summary_of_the_operation AS operation_summary,
     TO_DATE(REPLACE(operation_start_date,' г.',''),'DD.MM.YYYY')::DATE AS operation_start_date,
     TO_DATE(REPLACE(date_of_completion_of_the_operation,' г.',''),'DD.MM.YYYY')::DATE AS operation_end_date,
-    'EUR' AS currency,
-    -- TODO: THIS NEEDS TO BE CONFIRMED IF EUR OR BGN
+    'BGN' AS currency,
     total_eligible_costs_granted_for_the_operation::DECIMAL AS operation_total_expenditure,
     CASE
       WHEN _of_ec_cofinancing::DECIMAL > 1.0 THEN _of_ec_cofinancing::DECIMAL
@@ -201,8 +197,7 @@ WITH
     summary_of_the_operation AS operation_summary,
     TO_DATE(REPLACE(operation_start_date,' г.',''),'DD.MM.YYYY')::DATE AS operation_start_date,
     TO_DATE(REPLACE(date_of_completion_of_the_operation,' г.',''),'DD.MM.YYYY')::DATE AS operation_end_date,
-    'EUR' AS currency,
-    -- TODO: THIS NEEDS TO BE CONFIRMED IF EUR OR BGN
+    'BGN' AS currency,
     total_eligible_costs_granted_for_the_operation::DECIMAL AS operation_total_expenditure,
     CASE
       WHEN _of_ec_cofinancing::DECIMAL > 1.0 THEN _of_ec_cofinancing::DECIMAL
@@ -249,8 +244,7 @@ WITH
     summary_of_the_operation AS operation_summary,
     TO_DATE(REPLACE(operation_start_date,' г.',''),'DD.MM.YYYY')::DATE AS operation_start_date,
     TO_DATE(REPLACE(date_of_completion_of_the_operation,' г.',''),'DD.MM.YYYY')::DATE AS operation_end_date,
-    'EUR' AS currency,
-    -- TODO: THIS NEEDS TO BE CONFIRMED IF EUR OR BGN
+    'BGN' AS currency,
     total_eligible_costs_granted_for_the_operation::DECIMAL AS operation_total_expenditure,
     CASE
       WHEN _of_ec_cofinancing::DECIMAL > 1.0 THEN _of_ec_cofinancing::DECIMAL
