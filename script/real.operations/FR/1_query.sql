@@ -667,7 +667,7 @@ WITH
     NULL AS territorial_delivery_mechanism,
     NULL AS esf_secondary_theme,
     NULL AS economic_dimension,
-    '' AS cci,
+    '2014FR' AS cci,
     '2014FR_1' AS data_source
   FROM raw."2014FR_1"
   WHERE nom_du_beneficiaire != 'Beneficiary name'
