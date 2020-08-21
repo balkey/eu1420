@@ -44,7 +44,7 @@ WITH
     NULL AS territorial_delivery_mechanism,
     NULL AS esf_secondary_theme,
     NULL AS economic_dimension,
-    NULL AS cci,
+    '2014CZ_1' AS cci,
     '2014CZ_1' AS data_source
   FROM raw."2014CZ_1"
   WHERE mena != 'Currency'

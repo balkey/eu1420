@@ -51,7 +51,7 @@ base AS (
 
 vw AS (
   SELECT
-    'operation_name' AS column_name,
+    'Operation name' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(operation_name_present) AS present,
     ROUND((SUM(operation_name_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -59,7 +59,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'beneficiary_name' AS column_name,
+    'Beneficiary name' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(beneficiary_name_present) AS present,
     ROUND((SUM(beneficiary_name_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -67,7 +67,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_summary' AS column_name,
+    'Operation summary' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(operation_summary_present) AS present,
     ROUND((SUM(operation_summary_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -75,7 +75,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_start_date' AS column_name,
+    'Operation start date' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(operation_start_date_present) AS present,
     ROUND((SUM(operation_start_date_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -83,7 +83,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_end_date' AS column_name,
+    'Operation end date' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(operation_end_date_present) AS present,
     ROUND((SUM(operation_end_date_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -91,7 +91,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_total_expenditure' AS column_name,
+    'Operation total expenditure' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(operation_total_expenditure_present) AS present,
     ROUND((SUM(operation_total_expenditure_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -99,7 +99,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'eu_cofinancing_rate' AS column_name,
+    'EU cofinancing rate' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(eu_cofinancing_rate_present) AS present,
     ROUND((SUM(eu_cofinancing_rate_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -107,7 +107,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'country' AS column_name,
+    'Country' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(country_present) AS present,
     ROUND((SUM(country_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -115,7 +115,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_location' AS column_name,
+    'Operation location' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(operation_location_present) AS present,
     ROUND((SUM(operation_location_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -123,7 +123,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'name_of_category_intervention' AS column_name,
+    'Name of category intervention' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(name_of_category_intervention_present) AS present,
     ROUND((SUM(name_of_category_intervention_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -131,7 +131,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'date_of_last_update' AS column_name,
+    'Date of last update' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(date_of_last_update_present) AS present,
     ROUND((SUM(date_of_last_update_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -142,4 +142,17 @@ vw AS (
 SELECT
   *
 FROM vw
-ORDER BY 1,2;
+ORDER BY
+CASE
+  WHEN column_name = 'Operation name' THEN 1
+  WHEN column_name = 'Beneficiary name' THEN 2
+  WHEN column_name = 'Operation summary' THEN 3
+  WHEN column_name = 'Operation start date' THEN 4
+  WHEN column_name = 'Operation end date' THEN 5
+  WHEN column_name = 'Operation total expenditure' THEN 6
+  WHEN column_name = 'EU cofinancing rate' THEN 7
+  WHEN column_name = 'Country' THEN 8
+  WHEN column_name = 'Operation location' THEN 9
+  WHEN column_name = 'Name of category intervention' THEN 10
+  WHEN column_name = 'Date of last update' THEN 11
+END;

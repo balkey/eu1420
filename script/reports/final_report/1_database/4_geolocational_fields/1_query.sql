@@ -59,7 +59,7 @@ base AS (
 
 vw AS (
   SELECT
-    'operation_nuts1_code' AS geolocation_type,
+    'NUTS1 code' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_nuts1_code_present) AS present,
     ROUND((SUM(operation_nuts1_code_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -67,7 +67,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_nuts1_name' AS geolocation_type,
+    'NUTS1 name' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_nuts1_name_present) AS present,
     ROUND((SUM(operation_nuts1_name_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -75,7 +75,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_nuts2_code' AS geolocation_type,
+    'NUTS2 code' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_nuts2_code_present) AS present,
     ROUND((SUM(operation_nuts2_code_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -83,7 +83,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_nuts2_name' AS geolocation_type,
+    'NUTS2 name' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_nuts2_name_present) AS present,
     ROUND((SUM(operation_nuts2_name_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -91,7 +91,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_nuts3_code' AS geolocation_type,
+    'NUTS3 code' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_nuts3_code_present) AS present,
     ROUND((SUM(operation_nuts3_code_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -99,7 +99,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_nuts3_name' AS geolocation_type,
+    'NUTS3 name' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_nuts3_name_present) AS present,
     ROUND((SUM(operation_nuts3_name_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -107,7 +107,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_lau1_code' AS geolocation_type,
+    'LAU1 code' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_lau1_code_present) AS present,
     ROUND((SUM(operation_lau1_code_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -115,7 +115,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_lau1_name' AS geolocation_type,
+    'LAU1 name' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_lau1_name_present) AS present,
     ROUND((SUM(operation_lau1_name_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -123,7 +123,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_lau2_code' AS geolocation_type,
+    'LAU2 code' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_lau2_code_present) AS present,
     ROUND((SUM(operation_lau2_code_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -131,7 +131,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_lau2_name' AS geolocation_type,
+    'LAU2 name' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_lau2_name_present) AS present,
     ROUND((SUM(operation_lau2_name_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -139,7 +139,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_city' AS geolocation_type,
+    'City' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_city_present) AS present,
     ROUND((SUM(operation_city_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -147,7 +147,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_district' AS geolocation_type,
+    'District' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_district_present) AS present,
     ROUND((SUM(operation_district_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -155,7 +155,7 @@ vw AS (
   GROUP BY 1
   UNION ALL
   SELECT
-    'operation_zip_code' AS geolocation_type,
+    'Postal code' AS geolocation_type,
     COUNT(*) AS operation_count,
     SUM(operation_zip_code_present) AS present,
     ROUND((SUM(operation_zip_code_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -166,5 +166,19 @@ vw AS (
 SELECT
   *
 FROM vw
-WHERE present > 0
-ORDER BY 1;
+ORDER BY
+CASE
+  WHEN geolocation_type = 'NUTS1 code' THEN 1
+  WHEN geolocation_type = 'NUTS1 name' THEN 2
+  WHEN geolocation_type = 'NUTS2 code' THEN 3
+  WHEN geolocation_type = 'NUTS2 name' THEN 4
+  WHEN geolocation_type = 'NUTS3 code' THEN 5
+  WHEN geolocation_type = 'NUTS3 name' THEN 6
+  WHEN geolocation_type = 'LAU1 code' THEN 7
+  WHEN geolocation_type = 'LAU1 name' THEN 8
+  WHEN geolocation_type = 'LAU2 code' THEN 9
+  WHEN geolocation_type = 'LAU2 name' THEN 10
+  WHEN geolocation_type = 'City' THEN 11
+  WHEN geolocation_type = 'District' THEN 12
+  WHEN geolocation_type = 'Postal code' THEN 13
+END;

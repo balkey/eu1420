@@ -40,7 +40,7 @@ base AS (
 vw AS (
   SELECT
     operation_nuts0,
-    'beneficiary_id' AS column_name,
+    'Beneficiary ID' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(beneficiary_id_present) AS present,
     ROUND((SUM(beneficiary_id_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -49,7 +49,7 @@ vw AS (
   UNION ALL
   SELECT
     operation_nuts0,
-    'operation_id' AS column_name,
+    'Operation ID' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(operation_id_present) AS present,
     ROUND((SUM(operation_id_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -58,7 +58,7 @@ vw AS (
   UNION ALL
   SELECT
     operation_nuts0,
-    'priority_axis' AS column_name,
+    'Priority axis' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(priority_axis_present) AS present,
     ROUND((SUM(priority_axis_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -67,7 +67,7 @@ vw AS (
   UNION ALL
   SELECT
     operation_nuts0,
-    'form_of_finance' AS column_name,
+    'Form of finance' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(form_of_finance_present) AS present,
     ROUND((SUM(form_of_finance_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -76,7 +76,7 @@ vw AS (
   UNION ALL
   SELECT
     operation_nuts0,
-    'territorial_dimension' AS column_name,
+    'Territorial dimension' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(territorial_dimension_present) AS present,
     ROUND((SUM(territorial_dimension_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -85,7 +85,7 @@ vw AS (
   UNION ALL
   SELECT
     operation_nuts0,
-    'territorial_delivery_mechanism' AS column_name,
+    'Territorial delivery mechanism' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(territorial_delivery_mechanism_present) AS present,
     ROUND((SUM(territorial_delivery_mechanism_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -94,7 +94,7 @@ vw AS (
   UNION ALL
   SELECT
     operation_nuts0,
-    'esf_secondary_theme' AS column_name,
+    'ESF secondary theme' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(esf_secondary_theme_present) AS present,
     ROUND((SUM(esf_secondary_theme_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -103,7 +103,7 @@ vw AS (
   UNION ALL
   SELECT
     operation_nuts0,
-    'economic_dimension' AS column_name,
+    'Economic dimension' AS column_name,
     COUNT(*) AS transaction_count,
     SUM(economic_dimension_present) AS present,
     ROUND((SUM(economic_dimension_present)*1.0 / COUNT(*))*100.0,2) AS percentage
@@ -114,4 +114,15 @@ vw AS (
 SELECT
   *
 FROM vw
-ORDER BY 1,2;
+WHERE present > 0
+ORDER BY 1,
+CASE
+  WHEN column_name = 'Beneficiary ID' THEN 1
+  WHEN column_name = 'Operation ID' THEN 2
+  WHEN column_name = 'Priority axis' THEN 3
+  WHEN column_name = 'Form of finance' THEN 4
+  WHEN column_name = 'Territorial dimension' THEN 5
+  WHEN column_name = 'Territorial delivery mechanism' THEN 6
+  WHEN column_name = 'ESF secondary theme' THEN 7
+  WHEN column_name = 'Economic dimension' THEN 8
+END
