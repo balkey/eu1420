@@ -120,7 +120,10 @@ WITH
     TO_DATE("einddatum",'D-MM-YY') AS operation_end_date,
     'EUR' AS currency,
     REPLACE(totale_kosten,'.','')::DECIMAL AS operation_total_expenditure,
-    REPLACE(REPLACE(medefinancieringspercentage,',','.'),'%','')::DECIMAL*100.0 AS eu_cofinancing_rate,
+    CASE
+      WHEN medefinancieringspercentage LIKE '%\%%' THEN  REPLACE(REPLACE(medefinancieringspercentage,',','.'),'%','')::DECIMAL
+      ELSE REPLACE(REPLACE(medefinancieringspercentage,',','.'),'%','')::DECIMAL*100.0
+    END AS eu_cofinancing_rate,
     land AS country,
     plaats AS operation_location,
     categorie_steunverlening_code AS code_of_category_intervention,

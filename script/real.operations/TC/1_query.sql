@@ -292,8 +292,11 @@ WITH
       ELSE TO_DATE("end_datedata_di_fine",'DD.MM.YYYY')::DATE
     END AS operation_end_date,
     'EUR' AS currency,
-    REPLACE(REPLACE(REPLACE(total_budgetspesa_totale,'.',''),',','.'),' ','')::DECIMAL AS operation_total_expenditure,
-    REPLACE(REPLACE(REPLACE(erdf_contributionfesr_confinanziamento,'.',''),',','.'),' ','')::DECIMAL / REPLACE(REPLACE(REPLACE(total_budgetspesa_totale,'.',''),',','.'),' ','')::DECIMAL*100.0 AS eu_cofinancing_rate,
+    total_budgetspesa_totale::DECIMAL AS operation_total_expenditure,
+    CASE
+      WHEN erdf_contributionfesr_confinanziamento LIKE '%,%' THEN REPLACE(REPLACE(REPLACE(erdf_contributionfesr_confinanziamento,'.',''),',','.'),' ','')::DECIMAL / total_budgetspesa_totale::DECIMAL*100.0
+      ELSE erdf_contributionfesr_confinanziamento::DECIMAL / total_budgetspesa_totale::DECIMAL*100.0
+    END AS eu_cofinancing_rate,
     lp_countrypaese_del_lp AS country,
     participating_countriespaesi_partecipanti AS operation_location,
     NULL AS code_of_category_intervention,
@@ -314,7 +317,10 @@ WITH
     NULL AS operation_district,
     NULL AS operation_zip_code,
     NULL::DECIMAL AS member_state_value,
-    REPLACE(REPLACE(REPLACE(erdf_contributionfesr_confinanziamento,'.',''),',','.'),' ','')::DECIMAL AS eu_subsidy_value,
+    CASE
+      WHEN erdf_contributionfesr_confinanziamento LIKE '%,%' THEN REPLACE(REPLACE(REPLACE(erdf_contributionfesr_confinanziamento,'.',''),',','.'),' ','')::DECIMAL
+      ELSE erdf_contributionfesr_confinanziamento::DECIMAL
+    END AS eu_subsidy_value,
     NULL AS beneficiary_id,
     project_numbercodice_del_progetto AS operation_id,
     NULL AS priority_axis,
@@ -343,8 +349,8 @@ WITH
       ELSE TO_DATE("end_datedata_di_fine",'DD.MM.YYYY')::DATE
     END AS operation_end_date,
     'EUR' AS currency,
-    REPLACE(REPLACE(REPLACE(total_budgetspesa_totale,'.',''),',','.'),' ','')::DECIMAL AS operation_total_expenditure,
-    REPLACE(REPLACE(REPLACE(erdf_contributionfesr_confinanziamento,'.',''),',','.'),' ','')::DECIMAL / REPLACE(REPLACE(REPLACE(total_budgetspesa_totale,'.',''),',','.'),' ','')::DECIMAL*100.0 AS eu_cofinancing_rate,
+    total_budgetspesa_totale::DECIMAL AS operation_total_expenditure,
+    erdf_contributionfesr_confinanziamento::DECIMAL / total_budgetspesa_totale::DECIMAL*100.0 AS eu_cofinancing_rate,
     lp_countrypaese_del_lp AS country,
     participating_countriespaesi_partecipanti AS operation_location,
     NULL AS code_of_category_intervention,
@@ -365,7 +371,7 @@ WITH
     NULL AS operation_district,
     NULL AS operation_zip_code,
     NULL::DECIMAL AS member_state_value,
-    REPLACE(REPLACE(REPLACE(erdf_contributionfesr_confinanziamento,'.',''),',','.'),' ','')::DECIMAL AS eu_subsidy_value,
+    erdf_contributionfesr_confinanziamento::DECIMAL AS eu_subsidy_value,
     NULL AS beneficiary_id,
     project_numbercodice_del_progetto AS operation_id,
     NULL AS priority_axis,
