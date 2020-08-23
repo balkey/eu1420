@@ -65,45 +65,45 @@ transform_countries: load
 	$(foreach country, $(COUNTRY_LIST), $(DB_ACCESS) < script/real.operations/$(country)/1_query.sql $(\n))
 	
 load: tables
-	#. load.sh
+	. load.sh
 
 tables: final
-	#. tables.sh
+	. tables.sh
 
 final: evaluate_final
-	#rm -rf data/input_final/* && mkdir -p data/input_final
-	#python lib/scaffold.py -s 'INPUT_FINAL_FOLDER'
-	#python lib/create_valid_headers.py
-	#python lib/cut_csv_rows.py
-	#python lib/log_empty_columns.py
-	#python lib/create_sql_files.py
-	#python lib/cut_csv_columns.py
+	rm -rf data/input_final/* && mkdir -p data/input_final
+	python lib/scaffold.py -s 'INPUT_FINAL_FOLDER'
+	python lib/create_valid_headers.py
+	python lib/cut_csv_rows.py
+	python lib/log_empty_columns.py
+	python lib/create_sql_files.py
+	python lib/cut_csv_columns.py
 
 evaluate_final: prepare_final
-	#rm -rf data/input_eval/* && mkdir -p data/input_eval
-	#python lib/scaffold.py -s 'INPUT_EVAL_FOLDER'
-	#python lib/evaluate_header.py
+	rm -rf data/input_eval/* && mkdir -p data/input_eval
+	python lib/scaffold.py -s 'INPUT_EVAL_FOLDER'
+	python lib/evaluate_header.py
 
 prepare_final: detect_header
-	#rm -rf data/input/* && mkdir -p data/input
-	#python lib/scaffold.py -s 'INPUT_FOLDER'
-	#python lib/rename_and_copy.py
+	rm -rf data/input/* && mkdir -p data/input
+	python lib/scaffold.py -s 'INPUT_FOLDER'
+	python lib/rename_and_copy.py
 
 detect_header: encode
-	#rm -rf data/header_detected/* && mkdir -p data/header_detected
-	#python lib/scaffold.py -s 'HEADER_DETECTED_FOLDER'
-	#python lib/detect_header.py
+	rm -rf data/header_detected/* && mkdir -p data/header_detected
+	python lib/scaffold.py -s 'HEADER_DETECTED_FOLDER'
+	python lib/detect_header.py
 
 encode: make_csv
-	#rm -rf data/encoded/* && mkdir -p data/encoded
-	#python lib/scaffold.py -s 'ENCODED_FOLDER'
-	#python lib/encode.py
+	rm -rf data/encoded/* && mkdir -p data/encoded
+	python lib/scaffold.py -s 'ENCODED_FOLDER'
+	python lib/encode.py
 
 make_csv: uncompress
-	#rm -rf data/converted/* && mkdir -p data/converted
-	#python lib/scaffold.py -s 'CONVERTED_FOLDER'
-	#python lib/converter_controler.py
-	#python lib/remove_empty_files.py
+	rm -rf data/converted/* && mkdir -p data/converted
+	python lib/scaffold.py -s 'CONVERTED_FOLDER'
+	python lib/converter_controler.py
+	python lib/remove_empty_files.py
 
 uncompress: download
 ifeq ($(FORCE_DOWNLOAD),1)
