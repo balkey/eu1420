@@ -19,6 +19,10 @@ target_folder = confs['INPUT_EVAL_FOLDER']
 This script prints the possible header candidates if there's
 an ambiguity (more than 1 header candidate is detected),
 and through user input prompts to select one final header.
+The user needs to assign the correct row number listed belonging
+the respective header row candidates, or press c for just assigning
+an empty header. This way the file will not be included in the
+final database.
 '''
 
 def clear_cls():

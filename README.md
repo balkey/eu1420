@@ -3,7 +3,11 @@ Collecting EU subsidies for the 2014-2020 program.
 
 ## GOAL
 
-The goal of this project is to collect, standardise, normalise and structure transactional data from the EU 2014 - 2020 funding cycle including the European Regional Development Funds (ERDF), the Cohesion Funds (CF) and the European Social Funds (ESF) reported by the EU27 + the United Kingdom, including interregional programs.
+The goal of this project is to create a database for the operations in the cohesion policy programmes in the 2014 - 2020 funding cycle among the EU 27 + United Kingdom member states, including interreg programmes. The project is a software solution that self-documents the collection of named datasets, and makes all operations and procedures (accessing, transforming, cleaning, converting, etc.) programatically reproducible, automated and extendible.
+
+The initial list of data sources was provided by the the European Commission. It was not within the scope of the project to research and collect all transactions within the 2014 - 2020 funding cycle - upon agreement only file-based, programatically accessible and computer readable sources were included, therefore data only existing in HTML format for example was outside of the scope. As the framework is extendible, it allows the technical user to include additional datasources that were not part of the project originally.
+
+## DATA STRUCTURE
 
 The final deliverable of the project is a master database that includes the following fields:
 
@@ -19,9 +23,73 @@ The final deliverable of the project is a master database that includes the foll
 - name of category of intervention
 - date of last update of list of operations
 
-## SOURCE FORMAT
+## DEPLOYMENT
 
-The location of the online accessible national files should be listed in the following format (examples with minimal data requirement):
+#### Clone the repository
+
+```
+$ git clone https://github.com/balkey/eu1420.git
+```
+
+### Install PostgreSQL
+
+The project was tested on PostgreSQL 12.2. You could either install and run a PostgreSQL server locally, or use a hosted database. In case you want to run locally, install PostgreSQL [following this tutorial](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-16-04).
+
+Create your user with a role allowing to create schemas and tables. Create a database you will use.
+
+Include your database connection details in an environmental file, following the example [here](https://github.com/balkey/eu1420/tree/master/config).
+
+#### Create a `.pgpass` file with your credenitals in `/home/usr/`:
+
+Read [here](https://www.postgresql.org/docs/9.4/libpq-pgpass.html) on the formating convention. Don't forget to grant executive permissions on the file:
+
+```
+$ chmod 0600 ~/.pgpass
+```
+
+### Install Python3
+
+It is strongly recommended to deploy the project in a virtual environment. We recommend virtualenv. [Follow this tutorial](https://gist.github.com/frfahim/73c0fad6350332cef7a653bcd762f08d) to install Python3!
+
+#### Install pip3 for Python3
+
+```
+$ sudo apt install python3-pip
+```
+
+### Install dependencies
+
+Once you set up Python and PostgreSQL, it is time to install dependencies for the project. Simply run in the project's root folder:
+
+```
+$ pip3 install -r requirements.txt
+```
+
+That's it, you should be ready to go!
+
+### Include config files
+
+Make sure you have included all necessary configuration files. YOu can see examples in the [config folder](https://github.com/balkey/eu1420/tree/master/config).
+
+## SHORT MANUAL
+
+There's two ways to run the entire project: either falling back to previously downloaded files, or downloading them from scratch. We strongly recommend using previously downloaded files as there's no guarantee that newly downloaded files will respect the data structures defined in the project, so it is very likely that you'll get errors that way.
+
+You can also add new files to the existing ones, simply copy them to the `data/source` folder.
+
+Make sure you keep the `data/source/[COUNTRY_CODE]/[PROGAME_CODE]/file.xlsx` convention when adding new files!
+
+In case you already have included the files in the `data/source` folder, simply run in the project's root folder:
+
+```
+$ make
+```
+
+In case you want to newly download the sourcefiles, you need to download them from a Google Sheets first, using the Google Sheets API. See an [example sheet here](https://docs.google.com/spreadsheets/d/1ZXkIOly8p6bSCed42YBd9KyYCbDyrnkSp8_MfJ6JXtk/edit#gid=0).
+
+Then see the how the sheet is downloaded [here](https://github.com/balkey/eu1420/blob/master/makefile#L131). You can also just copy your source file to `data/source/operations_list.csv` - in this case, make sure to comment out the command downloading the sheet from the Google Sheets API.
+
+The minimal data requirement is the following for your `operations_list.csv` file:
 
 country|reference      |endpoint                                                                                                                                      |access |fileformat|compressed|
 -------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------|-------|----------|----------|
@@ -54,3 +122,10 @@ SI     |2014SI16MAOP001|https://www.eu-skladi.si/sl/dokumenti/seznam-projektov/s
 SK     |2014SK16M1OP002|http://www.op-kzp.sk/wp-content/uploads/2015/05/Zoznam-projektov_OP-KZP_27.4.2017_SIEA1.xlsx                                                  |online |xlsx      |         0|
 TC     |2014TC16RFCB014|http://database.centralbaltic.eu/export/list-of-operations.csv                                                                                |online |csv       |         0|
 UK     |2014UK16RFOP002|http://www.eufunding.gi/docs7/Beneficiaries%20Excel.xls                                                                                       |online |xls       |         0|
+Once this file is in place, you just simply need to run:
+
+```
+$ $ make FORCE_DOWNLOAD=1
+```
+
+There's one important human supervision in the code, when the interatctive shell will prompt for user input in assigning the correct detected header for each source file. Please review the code [here](https://github.com/balkey/eu1420/blob/master/lib/evaluate_header.py).
