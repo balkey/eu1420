@@ -65,11 +65,11 @@ Once you set up Python and PostgreSQL, it is time to install dependencies for th
 $ pip3 install -r requirements.txt
 ```
 
-That's it, you should be ready to go!
-
 ### Include config files
 
-Make sure you have included all necessary configuration files. YOu can see examples in the [config folder](https://github.com/balkey/eu1420/tree/master/config).
+Make sure you have included all necessary configuration files. You can see examples in the [config folder](https://github.com/balkey/eu1420/tree/master/config).
+
+That's it, you should be ready to go!
 
 ## SHORT MANUAL
 
@@ -122,10 +122,11 @@ SI     |2014SI16MAOP001|https://www.eu-skladi.si/sl/dokumenti/seznam-projektov/s
 SK     |2014SK16M1OP002|http://www.op-kzp.sk/wp-content/uploads/2015/05/Zoznam-projektov_OP-KZP_27.4.2017_SIEA1.xlsx                                                  |online |xlsx      |         0|
 TC     |2014TC16RFCB014|http://database.centralbaltic.eu/export/list-of-operations.csv                                                                                |online |csv       |         0|
 UK     |2014UK16RFOP002|http://www.eufunding.gi/docs7/Beneficiaries%20Excel.xls                                                                                       |online |xls       |         0|
+
 Once this file is in place, you just simply need to run:
 
 ```
-$ $ make FORCE_DOWNLOAD=1
+$ make FORCE_DOWNLOAD=1
 ```
 
 There's one important human supervision in the code, when the interatctive shell will prompt for user input in assigning the correct detected header for each source file. Please review the code [here](https://github.com/balkey/eu1420/blob/master/lib/evaluate_header.py).
