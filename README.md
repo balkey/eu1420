@@ -23,7 +23,6 @@ The final deliverable of the project is a master database that includes the foll
 
 The location of the online accessible national files should be listed in the following format (examples with minimal data requirement):
 
-```
 country|reference      |endpoint                                                                                                                                      |access |fileformat|compressed|
 -------|---------------|----------------------------------------------------------------------------------------------------------------------------------------------|-------|----------|----------|
 AT     |2014AT16RFOP001|https://www.efre.gv.at/fileadmin/user_upload/downloadcenter/Vorhabensliste/Vorhabensliste_IWB_EFRE_AT2014-2020_Download.xlsx                  |online |xlsx      |         0|
@@ -55,4 +54,3 @@ SI     |2014SI16MAOP001|https://www.eu-skladi.si/sl/dokumenti/seznam-projektov/s
 SK     |2014SK16M1OP002|http://www.op-kzp.sk/wp-content/uploads/2015/05/Zoznam-projektov_OP-KZP_27.4.2017_SIEA1.xlsx                                                  |online |xlsx      |         0|
 TC     |2014TC16RFCB014|http://database.centralbaltic.eu/export/list-of-operations.csv                                                                                |online |csv       |         0|
 UK     |2014UK16RFOP002|http://www.eufunding.gi/docs7/Beneficiaries%20Excel.xls                                                                                       |online |xls       |         0|
-``` 
