@@ -7,22 +7,6 @@ The goal of this project is to create a database for the operations in the cohes
 
 The initial list of data sources was provided by the the European Commission. It was not within the scope of the project to research and collect all transactions within the 2014 - 2020 funding cycle - upon agreement only file-based, programatically accessible and computer readable sources were included, therefore data only existing in HTML format for example was outside of the scope. As the framework is extendible, it allows the technical user to include additional datasources that were not part of the project originally.
 
-## DATA STRUCTURE
-
-The final deliverable of the project is a master database that includes the following fields:
-
-- beneficiary name
-- operation name
-- operation summary
-- operation start date
-- operation end date
-- total eligible expenditure allocated to the operation
-- Union co-financing rate
-- operation postcode or any location indictor
-- country
-- name of category of intervention
-- date of last update of list of operations
-
 ## DEPLOYMENT
 
 #### Clone the repository
@@ -51,7 +35,7 @@ $ chmod 0600 ~/.pgpass
 
 It is strongly recommended to deploy the project in a virtual environment. We recommend virtualenv. [Follow this tutorial](https://gist.github.com/frfahim/73c0fad6350332cef7a653bcd762f08d) to install Python3!
 
-#### Install pip3 for Python3
+### Install pip3 for Python3
 
 ```
 $ sudo apt install python3-pip
