@@ -18,6 +18,7 @@ create_source_master: start
 
 	$(DB_ACCESS) < script/cci_codes/1_table.sql
 	$(DB_ACCESS) < script/cci_codes/2_load.sql
+	$(DB_ACCESS) < script/cci_codes/3_real.sql
 
 start:
 	$(DB_ACCESS) < script/schemas/1_create.sql
