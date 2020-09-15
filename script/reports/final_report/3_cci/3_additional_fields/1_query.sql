@@ -37,7 +37,7 @@ base AS (
   FROM real.operations_eu
 ),
 
-vw AS (
+merged AS (
   SELECT
     cci,
     'beneficiary_id' AS column_name,
@@ -109,9 +109,25 @@ vw AS (
     ROUND((SUM(economic_dimension_present)*1.0 / COUNT(*))*100.0,2) AS percentage
   FROM base
   GROUP BY 1,2
+),
+
+vw AS (
+  SELECT
+    m.cci,
+    COALESCE(c.programme_title,(m.cci||' (CCI code / programme title unretrievable)')) AS programme_title,
+    m.column_name,
+    m.transaction_count,
+    m.present,
+    m.percentage
+  FROM merged AS m
+  LEFT JOIN real.cci_codes AS c ON m.cci = c.cci_code
 )
 
 SELECT
-  *
+  programme_title,
+  column_name,
+  transaction_count,
+  present,
+  percentage
 FROM vw
-ORDER BY 1,2;
+ORDER BY cci, column_name;

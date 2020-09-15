@@ -57,7 +57,7 @@ base AS (
   FROM real.operations_eu
 ),
 
-vw AS (
+merged AS (
   SELECT
     cci,
     'operation_nuts1_code' AS geolocation_type,
@@ -174,10 +174,26 @@ vw AS (
     ROUND((SUM(operation_zip_code_present)*1.0 / COUNT(*))*100.0,2) AS percentage
   FROM base
   GROUP BY 1,2
+),
+
+vw AS (
+  SELECT
+    m.cci,
+    COALESCE(c.programme_title,(m.cci||' (CCI code / programme title unretrievable)')) AS programme_title,
+    m.geolocation_type,
+    m.operation_count,
+    m.present,
+    m.percentage
+  FROM merged AS m
+  LEFT JOIN real.cci_codes AS c ON m.cci = c.cci_code
 )
 
 SELECT
-  *
+  programme_title,
+  geolocation_type,
+  operation_count,
+  present,
+  percentage
 FROM vw
 WHERE present > 0
-ORDER BY 1,2;
+ORDER BY cci, geolocation_type;
