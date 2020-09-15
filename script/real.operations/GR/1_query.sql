@@ -139,7 +139,7 @@ WITH
     NULL AS territorial_delivery_mechanism,
     NULL AS esf_secondary_theme,
     NULL AS economic_dimension,
-    '2014GR16M2OP007_1' AS cci,
+    '2014GR16M2OP007' AS cci,
     '2014GR16M2OP007_1' AS data_source
   FROM raw."2014GR16M2OP007_1"
   WHERE pososto_enosiakes_sterikses__aksona IS NOT NULL
