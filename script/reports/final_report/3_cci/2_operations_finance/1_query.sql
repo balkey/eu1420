@@ -20,7 +20,7 @@ SELECT
   operation_count,
   beneficiary_count,
   operation_total_expenditure,
-  subsidies_allocated,
-  avg_eu_cofinancing_rate
+  subsidies_allocated
+  --avg_eu_cofinancing_rate
 FROM base 
 ORDER BY cci;  
