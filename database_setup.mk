@@ -16,6 +16,9 @@ create_source_master: start
 	$(DB_ACCESS) < script/source_master/3_real.sql
 	$(DB_ACCESS) < script/source_master/4_dump.sql
 
+	$(DB_ACCESS) < script/cci_codes/1_table.sql
+	$(DB_ACCESS) < script/cci_codes/2_load.sql
+
 start:
 	$(DB_ACCESS) < script/schemas/1_create.sql
 	$(DB_ACCESS) < script/udfs/safe_cast.sql

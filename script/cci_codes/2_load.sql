@@ -1,0 +1,1 @@
+\copy raw.cci_codes FROM 'script/cci_codes/cci_codes.csv' DELIMITER ',' CSV HEADER;
