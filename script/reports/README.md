@@ -5,3 +5,4 @@ This folder includes all SQL scripts necessary to generate data for various repo
 So far, the following reports are included here:
 
 - interim_report
+- final_report
