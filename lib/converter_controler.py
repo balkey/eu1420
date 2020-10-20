@@ -30,7 +30,7 @@ for dirpath, dirnames, filenames in os.walk("./data/source/"):
 			elif extension in ['csv']:
 				move_csv(dirpath, filename)
 			else:
-				print('WHAT IS THIS? '+str(extension))
+				print('Unrecognised file format '+str(extension))
 				print(dirpath)
 				print(filename)
 		else:
