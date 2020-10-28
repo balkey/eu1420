@@ -43,7 +43,7 @@ $ sudo apt install python3-pip
 
 ### Install csvkit system-wide
 
-Make sure that you are able to run csvkit commands directly from the command line or envoked via Python. Therefore we recommend to install it system wide.
+Make sure that you are able to run csvkit commands directly from the command line or envoked via Python. Therefore we recommend to install it system-wide.
 
 On Ubuntu:
 
