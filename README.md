@@ -41,7 +41,23 @@ It is strongly recommended to deploy the project in a virtual environment. We re
 $ sudo apt install python3-pip
 ```
 
-### Install dependencies
+### Install csvkit system-wide
+
+Make sure that you are able to run csvkit commands directly from the command line or envoked via Python. Therefore we recommend to install it system wide.
+
+On Ubuntu:
+
+```
+$ apt-get install csvkit
+```
+
+On OSX:
+
+```
+$ brew install csvkit
+```
+
+### Install Python dependencies
 
 Once you set up Python and PostgreSQL, it is time to install dependencies for the project. Simply run in the project's root folder:
 
